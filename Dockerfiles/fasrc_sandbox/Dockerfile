@@ -1,1 +1,1 @@
-FROM bioconductor/bioconductor_docker:RELEASE_3_11
+FROM bioconductor/bioconductor_docker:RELEASE_3_10
