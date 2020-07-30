@@ -1,0 +1,16 @@
+# Export the module function if it exists
+[[ $(type -t module) == "function" ]] && export -f module
+
+export SINGULARITYENV_USER=${USER}
+
+# Find available port to run server on
+port=$(find_port ${host} 7000 11000  )
+
+# Define a password and export it for RStudio authentication
+password="$(create_passwd 16)"
+export SINGULARITYENV_PASSWORD="${password}"
+export RSTUDIO_PASSWORD="${password}"
+
+export CONTAINER_REPO=/n/helmod/apps/centos7/Singularity/OOD_Apps_academic_cluster/Fall_2020
+export COURSE=fasrc_sandbox_rstudio
+
