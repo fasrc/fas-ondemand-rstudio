@@ -13,8 +13,7 @@ The software will be run as a singularity container.
 As base for our container we will use [Bioconductor docker containers](https://hub.docker.com/r/bioconductor/bioconductor_docker), which are based off images from the rocker project [rockerdev](https://hub.docker.com/r/rockerdev/rstudio).
 As reference for bioconductor [this is the main project page](https://www.bioconductor.org/help/docker/).
 
-
-Using those as base containers should guarantee that we have a large amount of dependencies already satisfied.
+Also, including in the reference image extra very typical packages from [rocker verse](https://hub.docker.com/r/rocker/verse/dockerfile) should guarantee that we have a large amount of dependencies already satisfied.
 
 ## Install
 
