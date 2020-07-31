@@ -1,18 +1,3 @@
-## this is the location where we need to host the dockerfile for this class, and point dockerhub to it.
-
-In this case, being this a dummy class example, we are not doing really anything in the docker file, other than simply pulling an upstream bioconductor image
-
-To build the image manually on a test host we can do something like this
-
-```sh
-$> sudo docker build -t rstudio_rockerverse_fasrc:4.0.0 .
-$> mkdir -p /data/sing-images/Fall_2020/fasrc_sandbox
-$> mkdir -p /data/tmp
-$> sudo docker run -v /var/run/docker.sock:/var/run/docker.sock -v /data/sing-images/Fall_2020/fasrc_sandbox:/output -v /data/tmp:/tmp --privileged -t --rm quay.io/singularity/docker2singularity rstudio_rockerverse_fasrc:4.0.0 
-```
-
-The curent reference container includes the following R packages :
-```sh
              Package        LibPath                         Version
 arrow        "arrow"        "/usr/local/lib/R/site-library" "0.17.1"
 askpass      "askpass"      "/usr/local/lib/R/site-library" "1.1"
@@ -197,4 +182,3 @@ survival     "survival"     "/usr/local/lib/R/library"      "3.1-12"
 tcltk        "tcltk"        "/usr/local/lib/R/library"      "4.0.0"
 tools        "tools"        "/usr/local/lib/R/library"      "4.0.0"
 utils        "utils"        "/usr/local/lib/R/library"      "4.0.0"
-```

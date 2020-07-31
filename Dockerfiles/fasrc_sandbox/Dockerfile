@@ -1,92 +1,137 @@
-FROM bioconductor/bioconductor_docker:RELEASE_3_10
+FROM rocker/verse:4.0.0-ubuntu18.04
 
-## from https://hub.docker.com/r/rocker/tidyverse/dockerfile
+## adding stuff from  https://github.com/Bioconductor/bioconductor_docker/blob/master/Dockerfile
 
-RUN apt-get update -qq && apt-get -y --no-install-recommends install \
-  libxml2-dev \
-  libcairo2-dev \
-  libsqlite-dev \
-  libmariadbd-dev \
-  libmariadbclient-dev \
-  libpq-dev \
-  libssh2-1-dev \
-  unixodbc-dev \
-  libsasl2-dev \
-  && install2.r --error \
-    --deps TRUE \
-    tidyverse \
-    dplyr \
-    devtools \
-    formatR \
-    remotes \
-    selectr \
-    caTools \
-    ggplot2 \
-    corrplot \
-  && rm -rf /tmp/*
+RUN rm -f /var/lib/dpkg/available && apt clean && dpkg --clear-avail
 
-## from https://hub.docker.com/r/rocker/verse/dockerfile
+# This is to avoid the error
+# 'debconf: unable to initialize frontend: Dialog'
+ENV DEBIAN_FRONTEND noninteractive
 
-ARG CTAN_REPO=${CTAN_REPO:-https://www.texlive.info/tlnet-archive/2019/02/27/tlnet}
-ENV CTAN_REPO=${CTAN_REPO}
+# Update apt-get
+RUN apt-get update \
+        && apt-get install -y --no-install-recommends apt-utils \
+        && apt-get install -y --no-install-recommends \
+        ## Basic deps
+        gdb \
+        libxml2-dev \
+        python-pip \
+        libz-dev \
+        liblzma-dev \
+        libbz2-dev \
+        libpng-dev \
+        ## sys deps from bioc_full
+        pkg-config \
+        fortran77-compiler \
+        byacc \
+        automake \
+        curl \
+        ## This section installs libraries
+        libpng-dev \
+        libpcre2-dev \
+        libnetcdf-dev \
+        libhdf5-serial-dev \
+        libfftw3-dev \
+        libopenbabel-dev \
+        libopenmpi-dev \
+        libxt-dev \
+        libudunits2-dev \
+        libgeos-dev \
+        libproj-dev \
+        libcairo2-dev \
+        libtiff5-dev \
+        libreadline-dev \
+        libgsl0-dev \
+        libgslcblas0 \
+        libgtk2.0-dev \
+        libgl1-mesa-dev \
+        libglu1-mesa-dev \
+        libgmp3-dev \
+        libhdf5-dev \
+        libncurses-dev \
+        libbz2-dev \
+        libxpm-dev \
+        liblapack-dev \
+        libv8-dev \
+        libgtkmm-2.4-dev \
+        libmpfr-dev \
+        libmodule-build-perl \
+        libapparmor-dev \
+        libprotoc-dev \
+        librdf0-dev \
+        libmagick++-dev \
+        libsasl2-dev \
+        libpoppler-cpp-dev \
+        libprotobuf-dev \
+        libpq-dev \
+        libperl-dev \
+        libsqlite-dev \
+        libmariadbd-dev \
+        libmariadbclient-dev \
+        libpq-dev \
+        libssh2-1-dev \
+        unixodbc-dev \
+        ## software - perl extentions and modules
+        libarchive-extract-perl \
+        libfile-copy-recursive-perl \
+        libcgi-pm-perl \
+        libdbi-perl \
+        libdbd-mysql-perl \
+        libxml-simple-perl \
+        ## Databases and other software
+        sqlite \
+        openmpi-bin \
+        mpi-default-bin \
+        openmpi-common \
+        openmpi-doc \
+        tcl8.6-dev \
+        tk-dev \
+        default-jdk \
+        imagemagick \
+        tabix \
+        ggobi \
+        graphviz \
+        protobuf-compiler \
+        jags \
+        ## Additional resources
+        xfonts-100dpi \
+        xfonts-75dpi \
+        biber \
+        && apt-get clean \
+        && rm -rf /var/lib/apt/lists/*
 
-ENV PATH=$PATH:/opt/TinyTeX/bin/x86_64-linux/
+## Python installations
+RUN apt-get update \
+        && apt-get -y --no-install-recommends install python-dev \
+        && pip install wheel \
+        ## Install sklearn and pandas on python
+        && pip install sklearn \
+        pandas \
+        pyyaml \
+        cwltool \
+        && apt-get clean \
+        && rm -rf /var/lib/apt/lists/*
 
-## Add LaTeX, rticles and bookdown support
-RUN wget "https://travis-bin.yihui.name/texlive-local.deb" \
-  && dpkg -i texlive-local.deb \
-  && rm texlive-local.deb \
-  && apt-get update \
-  && apt-get install -y --no-install-recommends \
-    curl \
-    default-jdk \
-    fonts-roboto \
-    ghostscript \
-    less \
-    libbz2-dev \
-    libicu-dev \
-    liblzma-dev \
-    libhunspell-dev \
-    libjpeg-dev \
-    libmagick++-dev \
-    libopenmpi-dev \
-    librdf0-dev \
-    libtiff-dev \
-    libv8-dev \
-    libzmq3-dev \
-    qpdf \
-    ssh \
-    texinfo \
-    vim \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/ \
-  ## Use tinytex for LaTeX installation
-  && install2.r --error tinytex \
-  ## Admin-based install of TinyTeX:
-  && wget -qO- \
-    "https://github.com/yihui/tinytex/raw/master/tools/install-unx.sh" | \
-    sh -s - --admin --no-path \
-  && mv ~/.TinyTeX /opt/TinyTeX \
-  && if /opt/TinyTeX/bin/*/tex -v | grep -q 'TeX Live 2018'; then \
-      ## Patch the Perl modules in the frozen TeX Live 2018 snapshot with the newer
-      ## version available for the installer in tlnet/tlpkg/TeXLive, to include the
-      ## fix described in https://github.com/yihui/tinytex/issues/77#issuecomment-466584510
-      ## as discussed in https://www.preining.info/blog/2019/09/tex-services-at-texlive-info/#comments
-      wget -P /tmp/ ${CTAN_REPO}/install-tl-unx.tar.gz \
-      && tar -xzf /tmp/install-tl-unx.tar.gz -C /tmp/ \
-      && cp -Tr /tmp/install-tl-*/tlpkg/TeXLive /opt/TinyTeX/tlpkg/TeXLive \
-      && rm -r /tmp/install-tl-*; \
-    fi \
-  && /opt/TinyTeX/bin/*/tlmgr path add \
-  && tlmgr install ae inconsolata listings metafont mfware parskip pdfcrop tex \
-  && tlmgr path add \
-  && Rscript -e "tinytex::r_texmf()" \
-  && chown -R root:staff /opt/TinyTeX \
-  && chmod -R g+w /opt/TinyTeX \
-  && chmod -R g+wx /opt/TinyTeX/bin \
-  && echo "PATH=${PATH}" >> /usr/local/lib/R/etc/Renviron \
-  && install2.r --error PKI \
-  ## And some nice R packages for publishing-related stuff
-  && install2.r --error --deps TRUE \
-    bookdown rticles rmdshower rJava
+## FIXME
+## These two libraries don't install in the above section--WHY?
+RUN apt-get update \
+        && apt-get -y --no-install-recommends install \
+        libmariadb-dev-compat \
+        libjpeg-dev \
+        libjpeg-turbo8-dev \
+        libjpeg8-dev \
+        && apt-get clean \
+        && rm -rf /var/lib/apt/lists/*
+
+## FIXME
+RUN apt-get update \
+        && apt-get -y --no-install-recommends install \
+        libgdal-dev \
+        && apt-get clean \
+        && rm -rf /var/lib/apt/lists/*
+
+
+## Explicitly requested packages
+RUN install2.r corrplot
+RUN Rscript -e 'devtools::install_github("OI-Biostat/oi_biostat_data")'
 

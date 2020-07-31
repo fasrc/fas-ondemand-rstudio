@@ -10,10 +10,10 @@ It launches a Rstudio server within a batch job.
 ## Prerequisites
 
 The software will be run as a singularity container. 
-As base for our container we will use [Bioconductor docker containers](https://hub.docker.com/r/bioconductor/bioconductor_docker), which are based off images from the rocker project [rockerdev](https://hub.docker.com/r/rockerdev/rstudio).
+As base for our container we will use  [rocker verse](https://hub.docker.com/r/rocker/verse) , which are part of the [rocker project](https://www.rocker-project.org/).
 As reference for bioconductor [this is the main project page](https://www.bioconductor.org/help/docker/).
 
-Also, including in the reference image extra very typical packages from [rocker verse](https://hub.docker.com/r/rocker/verse/dockerfile) should guarantee that we have a large amount of dependencies already satisfied.
+We are also icluding in the reference image a number of system packages from [Bioconductor docker containers](https://github.com/Bioconductor/bioconductor_docker/blob/master/Dockerfile) which should guarantee that we have a good number of potential dependencies already satisfied in case students will need to build other packages.
 
 ## Install
 
