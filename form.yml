@@ -1,6 +1,6 @@
 ---
 title: "Rstudio Server"
-cluster: "odyssey3"
+cluster: "academic"
 attributes:
   modules: null
   extra_rstudio_args: ""
