@@ -135,3 +135,6 @@ RUN apt-get update \
 RUN install2.r corrplot
 RUN Rscript -e 'devtools::install_github("OI-Biostat/oi_biostat_data")'
 
+## add a couple of collections of latex style files
+RUN tlmgr update --self &&  tlmgr install collection-latex && tlmgr install  collection-latexrecommended
+
