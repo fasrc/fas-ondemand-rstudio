@@ -2,7 +2,10 @@
 # Start RStudio Server
 #
 
-export container_image=${CONTAINER_REPO}/${COURSE}/rstudio-current.sif
+export container_folder=${CONTAINER_REPO}/${COURSE}
+## when you test new installs you probaby want to drop the images locally in your home folder
+#export container_folder=$HOME/Programs/containers/fasrc_sandbox_rstudio/
+export container_image=$container_folder/<%= context.rstudio_version %>
 
 # Set working directory to home directory
 cd "${HOME}"
@@ -20,7 +23,8 @@ mkdir -p $R_LIBS_USER
 
 # Need a unique /tmp for this job for /tmp/rstudio-rsession & /tmp/rstudio-server
 WORKDIR=/scratch/${USER}/${SLURM_JOB_ID}
-mkdir -m 700 -p ${WORKDIR}/tmp 
+mkdir -m 700 -p ${WORKDIR}/tmp  
+mkdir -p ${WORKDIR}/var/run/{lock/rstudio-server,rstudio-server/rstudio-rsession,mount,systemd} ${WORKDIR}/logs
 
 # https://github.com/rocker-org/rocker-versioned/issues/153
 # override R_LIBS_USER in /etc/R/Renviron.site
@@ -41,10 +45,26 @@ END
 
 chmod +x ${WORKDIR}/rsession.sh
 
+## some binds that are necessary for running with singularity
+export SING_BINDS=" --bind ${WORKDIR}/logs:/var/log/rstudio-server --bind ${WORKDIR}/var/run:/var/run --bind ${WORKDIR}/tmp:/tmp"
+
+## use our specific configs
+export SING_BINDS="$SING_BINDS --bind ${WORKDIR}/Renviron.site:${R_HOME}/etc/Renviron.site --bind ${WORKDIR}/rsession.sh:/etc/rstudio/rsession.sh"
+
+## users can chose if starting from a fresh config or keep the default in HOME/.rstudio
+<%- if !context.custom_vanillaconf.to_i.zero? -%>
+mkdir -p ${WORKDIR}/.rstudio
+export SING_BINDS="$SING_BINDS --bind ${WORKDIR}/.rstudio:$HOME/.rstudio "
+<%- end -%>
+
+## found this
+## https://github.com/rocker-org/rocker-versioned/issues/187
+## but not sure is needed (needs some further testing)
+## ulimit -c unlimited 
+#
+
 singularity exec --cleanenv \
- --bind "${WORKDIR}/tmp:/tmp" \
- --bind "${WORKDIR}/Renviron.site:${R_HOME}/etc/Renviron.site" \
- --bind "${WORKDIR}/rsession.sh:/etc/rstudio/rsession.sh" \
+ $SING_BINDS \
  "${container_image}" \
  sh -c "USER=${USER}
  rserver \

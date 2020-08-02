@@ -34,6 +34,22 @@ attributes:
   bc_account:
     label: "Slurm Account"
     help: "If you are not in multiple labs please leave this blank."
+  rstudio_version:
+    widget: select
+    label: "rstudio version"
+    help: "select the container you want to run"
+    options:
+      - [ "R 3.6.3 - rocker/verse 3.6.3", "rstudio_rockerverse_fasrc_3.6.3/rstudio_rockerverse_fasrc_3.6.3.sif"]
+      - [ "R 4.0.0 - rocker/verse 4.0.0", "rstudio_rockerverse_fasrc_4.0.0/rstudio_rockerverse_fasrc_4.0.0.sif"]
+  custom_vanillaconf:
+    label: "Start rstudio with a new configuration"
+    widget: check_box
+    value: 1
+    help: |
+          **_Checking this box will start rstudio with a fresh configuration._** 
+          
+          This is useful if you need to run different instances at the same time with different configurations.<br> 
+          Leave the box unchecked if you want rstudio to start with the default configuration you have in your ~/.rstudio
 
 form:
   - modules
@@ -41,8 +57,10 @@ form:
   - bc_queue
   - custom_memory_per_node
   - custom_num_cores
-  - custom_num_gpus
   - custom_time
+  - rstudio_version
+  - custom_vanillaconf
+  - custom_num_gpus
   - bc_email_on_started
   - custom_email_address
   - custom_reservation
