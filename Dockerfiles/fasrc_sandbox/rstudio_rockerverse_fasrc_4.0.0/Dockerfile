@@ -41,6 +41,7 @@ RUN apt-get update \
         libcairo2-dev \
         libtiff5-dev \
         libreadline-dev \
+        libglpk-dev \
         libgsl0-dev \
         libgslcblas0 \
         libgtk2.0-dev \
@@ -131,9 +132,11 @@ RUN apt-get update \
         && rm -rf /var/lib/apt/lists/*
 
 
-## Explicitly requested packages
-RUN install2.r corrplot
-RUN Rscript -e 'devtools::install_github("OI-Biostat/oi_biostat_data")'
+## Explicitly requested packages (e.g. STAT 104, GOV 51)
+RUN install2.r corrplot learnr
+RUN Rscript -e 'devtools::install_github("OI-Biostat/oi_biostat_data")' \
+        && Rscript -e 'devtools::install_github("rstudio-education/gradethis")' \
+        && Rscript -e 'devtools::install_github("kosukeimai/qss-package", build_vignettes=TRUE)'
 
 ## add a couple of collections of latex style files
 RUN  tlmgr install collection-latex && tlmgr install  collection-latexrecommended && tlmgr install  collection-latexextra
