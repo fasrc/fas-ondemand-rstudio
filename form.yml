@@ -39,8 +39,9 @@ attributes:
     label: "rstudio version"
     help: "select the container you want to run"
     options:
-      - [ "R 4.0.0 - rocker/verse 4.0.0", "rstudio_rockerverse_fasrc_4.0.0/harvardat_atg-rstudio-general_4.0.0-084202c.sif"]
-      - [ "R 3.6.3 - rocker/verse 3.6.3", "rstudio_rockerverse_fasrc_3.6.3/harvardat_atg-rstudio-general_3.6.3-084202c.sif"]
+      - [ "R 4.0.2 - rocker/verse 4.0.2", "rstudio_rockerverse_fasrc_4.0.2/harvardat_atg-rstudio-general_4.0.2-e852267.sif"]
+      - [ "R 4.0.0 - rocker/verse 4.0.0", "rstudio_rockerverse_fasrc_4.0.0/harvardat_atg-rstudio-general_4.0.0-d14b898.sif"]
+      - [ "R 3.6.3 - rocker/verse 3.6.3", "rstudio_rockerverse_fasrc_3.6.3/harvardat_atg-rstudio-general_3.6.3-d14b898.sif"]
   custom_vanillaconf:
     label: "Start rstudio with a new configuration"
     widget: check_box
