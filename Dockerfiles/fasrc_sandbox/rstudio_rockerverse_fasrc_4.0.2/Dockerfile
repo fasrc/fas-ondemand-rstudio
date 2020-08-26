@@ -128,7 +128,7 @@ RUN apt-get update \
 	&& rm -rf /var/lib/apt/lists/*
 
 ## Explicitly requested packages (e.g. STAT 104, GOV 50, GOV 51)
-RUN install2.r corrplot learnr
+RUN install2.r corrplot learnr tidymodels
 RUN Rscript -e 'devtools::install_github("OI-Biostat/oi_biostat_data")' \
         && Rscript -e 'devtools::install_github("rstudio-education/gradethis")' \
         && Rscript -e 'devtools::install_github("kosukeimai/qss-package", build_vignettes=TRUE)' \
