@@ -12,7 +12,11 @@ attributes:
   custom_num_gpus: 0
   custom_reservation: null
   bc_account: null
-  rstudio_version: "rstudio_rockerverse_fasrc_4.0.2/harvardat_atg-rstudio-general_4.0.2-e852267.sif"
+  rstudio_version:
+    widget: select
+    label: "rstudio version"
+    options:
+      - [ "R 4.0.2 - Gov50", "harvardat_atg-rstudio-gov50_4.0.2-09b01e5.sif"]
   custom_vanillaconf: 0
 
 form:
@@ -25,7 +29,6 @@ form:
   - rstudio_version
   - custom_vanillaconf
   - custom_num_gpus
-  - bc_email_on_started
   - custom_email_address
   - custom_reservation
   - bc_account
