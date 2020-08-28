@@ -32,6 +32,17 @@ cat >${WORKDIR}/Renviron.site <<END
 R_LIBS_USER=$R_LIBS_USER
 END
 
+## add startup command requested by Prof Kane
+cat >${WORKDIR}/Rprofile.site <<END
+options(repos = c(CRAN = 'https://packagemanager.rstudio.com/all/__linux__/focal/latest'), download.file.method = 'libcurl')
+options(HTTPUserAgent = sprintf("R/%s R (%s)", getRversion(), 
+                 paste(getRversion(), R.version\$platform, 
+                       R.version\$arch, R.version\$os)))
+options(pkgType = "binary")
+rstudioapi::writeRStudioPreference(name = "load_workspace", value = FALSE)
+rstudioapi::writeRStudioPreference(name = "save_workspace", value = "never")
+END
+
 # rsession needs to start with OMP_NUM_THREADS set to prevent OpenBLAS
 # (and any other OpenMP-enhanced libraries used by R) from spawning too many
 # threads. a wrapper script is created for rsession.
@@ -49,7 +60,7 @@ chmod +x ${WORKDIR}/rsession.sh
 export SING_BINDS=" --bind ${WORKDIR}/logs:/var/log/rstudio-server --bind ${WORKDIR}/var/run:/var/run --bind ${WORKDIR}/tmp:/tmp"
 
 ## use our specific configs
-export SING_BINDS="$SING_BINDS --bind ${WORKDIR}/Renviron.site:${R_HOME}/etc/Renviron.site --bind ${WORKDIR}/rsession.sh:/etc/rstudio/rsession.sh"
+export SING_BINDS="$SING_BINDS --bind ${WORKDIR}/Rprofile.site:${R_HOME}/etc/Rprofile.site --bind ${WORKDIR}/Renviron.site:${R_HOME}/etc/Renviron.site --bind ${WORKDIR}/rsession.sh:/etc/rstudio/rsession.sh"
 
 ## users can chose if starting from a fresh config or keep the default in HOME/.rstudio
 <%- if !context.custom_vanillaconf.to_i.zero? -%>
