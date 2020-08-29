@@ -16,7 +16,7 @@ attributes:
     widget: select
     label: "rstudio version"
     options:
-      - [ "R 4.0.2 - Gov50", "harvardat_atg-rstudio-gov50_4.0.2-09b01e5.sif"]
+      - [ "R 4.0.2 - Gov50", "harvardat_atg-rstudio-gov50_4.0.2-b295d59.sif"]
   custom_vanillaconf: 0
 
 form:
