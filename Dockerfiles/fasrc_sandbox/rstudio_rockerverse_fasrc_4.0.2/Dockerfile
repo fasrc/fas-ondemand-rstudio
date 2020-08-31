@@ -128,13 +128,11 @@ RUN apt-get update \
 	&& rm -rf /var/lib/apt/lists/*
 
 ## Explicitly requested packages (e.g. STAT 104, GOV 50, GOV 51)
-RUN install2.r corrplot learnr tidymodels
+RUN install2.r curl corrplot learnr tidymodels
 RUN Rscript -e 'devtools::install_github("OI-Biostat/oi_biostat_data")' \
         && Rscript -e 'devtools::install_github("rstudio-education/gradethis")' \
         && Rscript -e 'devtools::install_github("kosukeimai/qss-package", build_vignettes=TRUE)' \
-        && Rscript -e 'devtools::install_github("rundel/learnrhash")' \
-        && Rscript -e 'devtools::install_github("davidkane9/PPBDS.data")'
+        && Rscript -e 'devtools::install_github("rundel/learnrhash")'
 
 ## add a couple of collections of latex style files
 RUN  tlmgr install collection-latex && tlmgr install  collection-latexrecommended && tlmgr install  collection-latexextra
-
