@@ -54,7 +54,7 @@ Type 'q()' to quit R.
            arrow       1.0.0
          askpass         1.1
       assertthat       0.2.1
-       backports       1.1.8
+       backports       1.1.9
        base64enc       0.1-3
               BH    1.72.0-3
      BiocManager     1.30.10
@@ -103,7 +103,7 @@ Type 'q()' to quit R.
  fivethirtyeight       0.6.1
          forcats       0.5.0
          foreach       1.5.0
-              fs       1.5.0
+              fs       1.4.2
              fst       0.9.2
      fueleconomy       1.0.0
            furrr       0.1.0
@@ -177,7 +177,6 @@ Type 'q()' to quit R.
          pkgload       1.1.0
            plogr       0.2.0
             plyr       1.8.6
-      PPBDS.data  0.3.2.9000
           praise       1.0.0
      prettyunits       1.1.1
             pROC      1.16.2
@@ -230,7 +229,7 @@ Type 'q()' to quit R.
             slam      0.1-47
        SnowballC       0.7.0
      sourcetools       0.1.7
-         SQUAREM      2020.3
+         SQUAREM      2020.4
          stringi       1.4.6
          stringr       1.4.0
            swirl       2.4.5

@@ -127,12 +127,15 @@ RUN apt-get update \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
 
-## Explicitly requested packages (e.g. STAT 104, GOV 50, GOV 51)
-RUN install2.r curl corrplot learnr tidymodels
-RUN Rscript -e 'devtools::install_github("OI-Biostat/oi_biostat_data")' \
-        && Rscript -e 'devtools::install_github("rstudio-education/gradethis")' \
-        && Rscript -e 'devtools::install_github("kosukeimai/qss-package", build_vignettes=TRUE)' \
-        && Rscript -e 'devtools::install_github("rundel/learnrhash")'
-
 ## add a couple of collections of latex style files
 RUN  tlmgr install collection-latex && tlmgr install  collection-latexrecommended && tlmgr install  collection-latexextra
+
+## Explicitly requested packages
+# Note: includes dependencies for the following GOV 50 package:
+#	 https://github.com/davidkane9/PPBDS.data
+RUN install2.r -e curl corrplot learnr tidymodels \
+	&& install2.r -e tidyverse lubridate stringr shiny gapminder fueleconomy dslabs skimr viridis ggthemes fivethirtyeight nycflights13 gt learnr base64enc testthat rmarkdown \
+	&& Rscript -e 'devtools::install_github("OI-Biostat/oi_biostat_data")' \
+	&& Rscript -e 'devtools::install_github("rstudio-education/gradethis")' \
+	&& Rscript -e 'devtools::install_github("kosukeimai/qss-package", build_vignettes=TRUE)' \
+	&& Rscript -e 'devtools::install_github("rundel/learnrhash")'
