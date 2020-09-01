@@ -131,11 +131,10 @@ RUN apt-get update \
 RUN  tlmgr install collection-latex && tlmgr install  collection-latexrecommended && tlmgr install  collection-latexextra
 
 ## Explicitly requested packages
-# Note: includes dependencies for the following GOV 50 package:
-#	 https://github.com/davidkane9/PPBDS.data
-RUN install2.r -e curl corrplot learnr tidymodels \
-	&& install2.r -e tidyverse lubridate stringr shiny gapminder fueleconomy dslabs skimr viridis ggthemes fivethirtyeight nycflights13 gt learnr base64enc testthat rmarkdown \
+# GOV 50 tutorials: https://github.com/davidkane9/PPBDS.data
+RUN install2.r -e fs curl corrplot learnr tidymodels \
 	&& Rscript -e 'devtools::install_github("OI-Biostat/oi_biostat_data")' \
 	&& Rscript -e 'devtools::install_github("rstudio-education/gradethis")' \
 	&& Rscript -e 'devtools::install_github("kosukeimai/qss-package", build_vignettes=TRUE)' \
-	&& Rscript -e 'devtools::install_github("rundel/learnrhash")'
+	&& Rscript -e 'devtools::install_github("rundel/learnrhash")' \
+	&& Rscript -e 'devtools::install_github("davidkane9/PPBDS.data")'

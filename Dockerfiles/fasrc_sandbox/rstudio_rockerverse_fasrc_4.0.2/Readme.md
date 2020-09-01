@@ -103,7 +103,7 @@ Type 'q()' to quit R.
  fivethirtyeight       0.6.1
          forcats       0.5.0
          foreach       1.5.0
-              fs       1.4.2
+              fs       1.5.0
              fst       0.9.2
      fueleconomy       1.0.0
            furrr       0.1.0
@@ -116,7 +116,7 @@ Type 'q()' to quit R.
               gh       1.1.0
            git2r      0.27.1
          globals      0.12.5
-            glue       1.4.1
+            glue       1.4.2
            gower       0.2.2
            GPfit       1.0-8
        gradethis  0.1.0.9004
@@ -177,6 +177,7 @@ Type 'q()' to quit R.
          pkgload       1.1.0
            plogr       0.2.0
             plyr       1.8.6
+      PPBDS.data  0.3.2.9000
           praise       1.0.0
      prettyunits       1.1.1
             pROC      1.16.2
@@ -200,7 +201,7 @@ Type 'q()' to quit R.
          rematch       1.0.1
         rematch2       2.1.2
          remotes       2.2.0
-            renv      0.11.0
+            renv      0.12.0
             repr       1.1.0
           reprex       0.3.0
              rex       1.2.0
@@ -238,7 +239,7 @@ Type 'q()' to quit R.
         testthat       2.3.2
           tibble       3.0.3
       tidymodels       0.1.1
-           tidyr       1.1.1
+           tidyr       1.1.2
       tidyselect       1.1.0
        tidyverse       1.3.0
         timeDate    3043.102
@@ -249,7 +250,7 @@ Type 'q()' to quit R.
           usdata       0.1.0
          usethis       1.6.1
             utf8       1.1.4
-           vctrs       0.3.2
+           vctrs       0.3.4
          viridis       0.5.1
      viridisLite       0.3.0
            vroom       1.2.1
