@@ -177,7 +177,6 @@ Type 'q()' to quit R.
          pkgload       1.1.0
            plogr       0.2.0
             plyr       1.8.6
-      PPBDS.data  0.3.2.9000
           praise       1.0.0
      prettyunits       1.1.1
             pROC      1.16.2
@@ -263,7 +262,7 @@ Type 'q()' to quit R.
         xaringan        0.16
             xfun        0.16
             xml2       1.3.2
-    xmlparsedata       1.0.3
+    xmlparsedata       1.0.4
            xopen       1.0.0
           xtable       1.8-4
             yaml       2.2.1
