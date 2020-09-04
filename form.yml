@@ -7,7 +7,7 @@ attributes:
   custom_time: "2-00:00"
   bc_queue: "academic"
   custom_email_address: null
-  custom_memory_per_node: 8
+  custom_memory_per_node: 16
   custom_num_cores: 2
   custom_num_gpus: 0
   custom_reservation: null
@@ -16,7 +16,7 @@ attributes:
     widget: select
     label: "rstudio version"
     options:
-      - [ "R 4.0.2 - Gov50", "harvardat_atg-rstudio-gov50_4.0.2-6779c30.sif"]
+      - [ "R 4.0.2 - Gov50", "harvardat_atg-rstudio-gov50_4.0.2-a0c77f2.sif"]
   custom_vanillaconf: 0
 
 form:
