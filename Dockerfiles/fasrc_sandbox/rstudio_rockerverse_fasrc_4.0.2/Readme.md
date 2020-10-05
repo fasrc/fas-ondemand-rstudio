@@ -1,21 +1,32 @@
-## this is the location where we need to host the dockerfile for this class, and point dockerhub to it.
+# Dockerfile for R 4.0.2 - GOV 51
 
-In this case, being this a dummy class example, we are not doing really anything in the docker file, other than simply pulling an upstream bioconductor image
-
-To build the image manually on a test host we can do something like this
+To build the Dockerfile:
 
 ```sh
-$> sudo docker build -t rstudio_rockerverse_fasrc:4.0.2 .
-$> mkdir -p /data/sing-images/Fall_2020/fasrc_sandbox
-$> mkdir -p /data/tmp
-$> sudo docker run -v /var/run/docker.sock:/var/run/docker.sock -v /data/sing-images/Fall_2020/fasrc_sandbox:/output -v /data/tmp:/tmp --privileged -t --rm quay.io/singularity/docker2singularity rstudio_rockerverse_fasrc:4.0.2 
-### copy the resulting image to 
-cp  /data/tmp/rstudio_rockerverse_fasrc_4.0.2*sif ${CONTAINERS_FOLDER}/fasrc_sandbox_rstudio/rstudio_rockerverse_fasrc_4.0.2/rstudio_rockerverse_fasrc_4.0.2.sif
+$ docker build -t harvardat/atg-rstudio-gov51:4.0.2 .
 ```
 
-The curent reference container includes the following R packages :
+To run the image:
+
+```
+$ docker run --rm -p 8787:8787 -e PASSWORD=yourpasswordhere harvardat/atg-rstudio-gov51:4.0.2
+```
+
+Each image should be tagged with the git commit and pushed to docker hub:
+
 ```sh
-docker run --rm -ti rstudio_rockerverse_fasrc:4.0.2 R
+$ export GIT_COMMIT_HASH=$(git log -1 --format=%h)
+$ docker tag harvardat/atg-rstudio-gov51:4.0.2 harvardat/atg-rstudio-gov51:4.0.2-$GIT_COMMIT_HASH
+$ docker tag harvardat/atg-rstudio-gov51:4.0.2 harvardat/atg-rstudio-gov51:latest
+$ docker push harvardat/atg-rstudio-gov51:4.0.2-$GIT_COMMIT_HASH
+$ docker push harvardat/atg-rstudio-gov51:4.0.2
+$ docker push harvardat/atg-rstudio-gov51:latest
+```
+
+The current image contains the following packages:
+
+```
+$ docker run --rm -ti harvardat/atg-rstudio-gov51:4.0.2 R 
 
 R version 4.0.2 (2020-06-22) -- "Taking Off Again"
 Copyright (C) 2020 The R Foundation for Statistical Computing
@@ -33,225 +44,213 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
-> installed.packages()
-              Package         LibPath                         Version      
-airports      "airports"      "/usr/local/lib/R/site-library" "0.1.0"      
-animation     "animation"     "/usr/local/lib/R/site-library" "2.6"        
-arrow         "arrow"         "/usr/local/lib/R/site-library" "1.0.0"      
-askpass       "askpass"       "/usr/local/lib/R/site-library" "1.1"        
-assertthat    "assertthat"    "/usr/local/lib/R/site-library" "0.2.1"      
-backports     "backports"     "/usr/local/lib/R/site-library" "1.1.8"      
-base64enc     "base64enc"     "/usr/local/lib/R/site-library" "0.1-3"      
-BH            "BH"            "/usr/local/lib/R/site-library" "1.72.0-3"   
-BiocManager   "BiocManager"   "/usr/local/lib/R/site-library" "1.30.10"    
-bit           "bit"           "/usr/local/lib/R/site-library" "1.1-15.2"   
-bit64         "bit64"         "/usr/local/lib/R/site-library" "0.9-7.1"    
-bitops        "bitops"        "/usr/local/lib/R/site-library" "1.0-6"      
-blob          "blob"          "/usr/local/lib/R/site-library" "1.2.1"      
-blogdown      "blogdown"      "/usr/local/lib/R/site-library" "0.20"       
-bookdown      "bookdown"      "/usr/local/lib/R/site-library" "0.20"       
-brew          "brew"          "/usr/local/lib/R/site-library" "1.0-6"      
-broom         "broom"         "/usr/local/lib/R/site-library" "0.7.0"      
-callr         "callr"         "/usr/local/lib/R/site-library" "3.4.3"      
-cellranger    "cellranger"    "/usr/local/lib/R/site-library" "1.1.0"      
-checkmate     "checkmate"     "/usr/local/lib/R/site-library" "2.0.0"      
-cherryblossom "cherryblossom" "/usr/local/lib/R/site-library" "0.1.0"      
-cli           "cli"           "/usr/local/lib/R/site-library" "2.0.2"      
-clipr         "clipr"         "/usr/local/lib/R/site-library" "0.7.0"      
-colorspace    "colorspace"    "/usr/local/lib/R/site-library" "1.4-1"      
-commonmark    "commonmark"    "/usr/local/lib/R/site-library" "1.7"        
-corrplot      "corrplot"      "/usr/local/lib/R/site-library" "0.84"       
-covr          "covr"          "/usr/local/lib/R/site-library" "3.5.0"      
-cpp11         "cpp11"         "/usr/local/lib/R/site-library" "0.2.1"      
-crayon        "crayon"        "/usr/local/lib/R/site-library" "1.3.4"      
-credentials   "credentials"   "/usr/local/lib/R/site-library" "1.3.0"      
-crosstalk     "crosstalk"     "/usr/local/lib/R/site-library" "1.1.0.1"    
-curl          "curl"          "/usr/local/lib/R/site-library" "4.3"        
-cyclocomp     "cyclocomp"     "/usr/local/lib/R/site-library" "1.1.0"      
-data.table    "data.table"    "/usr/local/lib/R/site-library" "1.13.0"     
-DBI           "DBI"           "/usr/local/lib/R/site-library" "1.1.0"      
-dbplyr        "dbplyr"        "/usr/local/lib/R/site-library" "1.4.4"      
-desc          "desc"          "/usr/local/lib/R/site-library" "1.2.0"      
-devtools      "devtools"      "/usr/local/lib/R/site-library" "2.3.1"      
-digest        "digest"        "/usr/local/lib/R/site-library" "0.6.25"     
-docopt        "docopt"        "/usr/local/lib/R/site-library" "0.7.1"      
-dplyr         "dplyr"         "/usr/local/lib/R/site-library" "1.0.2"      
-dslabs        "dslabs"        "/usr/local/lib/R/site-library" "0.7.3"      
-DT            "DT"            "/usr/local/lib/R/site-library" "0.14"       
-dtplyr        "dtplyr"        "/usr/local/lib/R/site-library" "1.0.1"      
-ellipsis      "ellipsis"      "/usr/local/lib/R/site-library" "0.3.1"      
-evaluate      "evaluate"      "/usr/local/lib/R/site-library" "0.14"       
-fansi         "fansi"         "/usr/local/lib/R/site-library" "0.4.1"      
-farver        "farver"        "/usr/local/lib/R/site-library" "2.0.3"      
-fastmap       "fastmap"       "/usr/local/lib/R/site-library" "1.0.1"      
-forcats       "forcats"       "/usr/local/lib/R/site-library" "0.5.0"      
-fs            "fs"            "/usr/local/lib/R/site-library" "1.5.0"      
-fst           "fst"           "/usr/local/lib/R/site-library" "0.9.2"      
-fueleconomy   "fueleconomy"   "/usr/local/lib/R/site-library" "1.0.0"      
-gapminder     "gapminder"     "/usr/local/lib/R/site-library" "0.3.0"      
-generics      "generics"      "/usr/local/lib/R/site-library" "0.0.2"      
-gert          "gert"          "/usr/local/lib/R/site-library" "0.3"        
-ggplot2       "ggplot2"       "/usr/local/lib/R/site-library" "3.3.2"      
-ggthemes      "ggthemes"      "/usr/local/lib/R/site-library" "4.2.0"      
-gh            "gh"            "/usr/local/lib/R/site-library" "1.1.0"      
-git2r         "git2r"         "/usr/local/lib/R/site-library" "0.27.1"     
-glue          "glue"          "/usr/local/lib/R/site-library" "1.4.1"      
-gradethis     "gradethis"     "/usr/local/lib/R/site-library" "0.1.0.9004" 
-gridExtra     "gridExtra"     "/usr/local/lib/R/site-library" "2.3"        
-gt            "gt"            "/usr/local/lib/R/site-library" "0.2.2"      
-gtable        "gtable"        "/usr/local/lib/R/site-library" "0.3.0"      
-haven         "haven"         "/usr/local/lib/R/site-library" "2.3.1"      
-highr         "highr"         "/usr/local/lib/R/site-library" "0.8"        
-hms           "hms"           "/usr/local/lib/R/site-library" "0.5.3"      
-htmltools     "htmltools"     "/usr/local/lib/R/site-library" "0.5.0.9000" 
-htmlwidgets   "htmlwidgets"   "/usr/local/lib/R/site-library" "1.5.1"      
-httpuv        "httpuv"        "/usr/local/lib/R/site-library" "1.5.4"      
-httr          "httr"          "/usr/local/lib/R/site-library" "1.4.2"      
-igraph        "igraph"        "/usr/local/lib/R/site-library" "1.2.5"      
-ini           "ini"           "/usr/local/lib/R/site-library" "0.3.1"      
-isoband       "isoband"       "/usr/local/lib/R/site-library" "0.2.2"      
-jsonlite      "jsonlite"      "/usr/local/lib/R/site-library" "1.7.0"      
-knitr         "knitr"         "/usr/local/lib/R/site-library" "1.29"       
-labeling      "labeling"      "/usr/local/lib/R/site-library" "0.3"        
-Lahman        "Lahman"        "/usr/local/lib/R/site-library" "8.0-0"      
-later         "later"         "/usr/local/lib/R/site-library" "1.1.0.1"    
-lazyeval      "lazyeval"      "/usr/local/lib/R/site-library" "0.2.2"      
-learnr        "learnr"        "/usr/local/lib/R/site-library" "0.10.1.9006"
-learnrhash    "learnrhash"    "/usr/local/lib/R/site-library" "0.1.0"      
-lifecycle     "lifecycle"     "/usr/local/lib/R/site-library" "0.2.0"      
-lintr         "lintr"         "/usr/local/lib/R/site-library" "2.0.1"      
-littler       "littler"       "/usr/local/lib/R/site-library" "0.3.11"     
-lubridate     "lubridate"     "/usr/local/lib/R/site-library" "1.7.9"      
-magick        "magick"        "/usr/local/lib/R/site-library" "2.4.0"      
-magrittr      "magrittr"      "/usr/local/lib/R/site-library" "1.5"        
-maps          "maps"          "/usr/local/lib/R/site-library" "3.3.0"      
-markdown      "markdown"      "/usr/local/lib/R/site-library" "1.1"        
-memoise       "memoise"       "/usr/local/lib/R/site-library" "1.1.0"      
-mime          "mime"          "/usr/local/lib/R/site-library" "0.9"        
-miniUI        "miniUI"        "/usr/local/lib/R/site-library" "0.1.1.1"    
-modelr        "modelr"        "/usr/local/lib/R/site-library" "0.1.8"      
-munsell       "munsell"       "/usr/local/lib/R/site-library" "0.5.0"      
-NHANES        "NHANES"        "/usr/local/lib/R/site-library" "2.1.0"      
-NLP           "NLP"           "/usr/local/lib/R/site-library" "0.2-0"      
-nycflights13  "nycflights13"  "/usr/local/lib/R/site-library" "1.0.1"      
-oibiostat     "oibiostat"     "/usr/local/lib/R/site-library" "0.2.0"      
-openintro     "openintro"     "/usr/local/lib/R/site-library" "2.0.0"      
-openssl       "openssl"       "/usr/local/lib/R/site-library" "1.4.2"      
-packrat       "packrat"       "/usr/local/lib/R/site-library" "0.5.0"      
-pillar        "pillar"        "/usr/local/lib/R/site-library" "1.4.6"      
-pkgbuild      "pkgbuild"      "/usr/local/lib/R/site-library" "1.1.0"      
-pkgconfig     "pkgconfig"     "/usr/local/lib/R/site-library" "2.0.3"      
-pkgload       "pkgload"       "/usr/local/lib/R/site-library" "1.1.0"      
-plogr         "plogr"         "/usr/local/lib/R/site-library" "0.2.0"      
-PPBDS.data    "PPBDS.data"    "/usr/local/lib/R/site-library" "0.3.2.9000" 
-praise        "praise"        "/usr/local/lib/R/site-library" "1.0.0"      
-prettyunits   "prettyunits"   "/usr/local/lib/R/site-library" "1.1.1"      
-processx      "processx"      "/usr/local/lib/R/site-library" "3.4.3"      
-progress      "progress"      "/usr/local/lib/R/site-library" "1.2.2"      
-promises      "promises"      "/usr/local/lib/R/site-library" "1.1.1"      
-ps            "ps"            "/usr/local/lib/R/site-library" "1.3.4"      
-purrr         "purrr"         "/usr/local/lib/R/site-library" "0.3.4"      
-qss           "qss"           "/usr/local/lib/R/site-library" "0.1.0.9000" 
-R6            "R6"            "/usr/local/lib/R/site-library" "2.4.1"      
-rappdirs      "rappdirs"      "/usr/local/lib/R/site-library" "0.3.1"      
-rcmdcheck     "rcmdcheck"     "/usr/local/lib/R/site-library" "1.3.3"      
-RColorBrewer  "RColorBrewer"  "/usr/local/lib/R/site-library" "1.1-2"      
-Rcpp          "Rcpp"          "/usr/local/lib/R/site-library" "1.0.5"      
-RCurl         "RCurl"         "/usr/local/lib/R/site-library" "1.98-1.2"   
-readr         "readr"         "/usr/local/lib/R/site-library" "1.3.1"      
-readxl        "readxl"        "/usr/local/lib/R/site-library" "1.3.1"      
-redland       "redland"       "/usr/local/lib/R/site-library" "1.0.17-11"  
-rematch       "rematch"       "/usr/local/lib/R/site-library" "1.0.1"      
-rematch2      "rematch2"      "/usr/local/lib/R/site-library" "2.1.2"      
-remotes       "remotes"       "/usr/local/lib/R/site-library" "2.2.0"      
-renv          "renv"          "/usr/local/lib/R/site-library" "0.11.0"     
-repr          "repr"          "/usr/local/lib/R/site-library" "1.1.0"      
-reprex        "reprex"        "/usr/local/lib/R/site-library" "0.3.0"      
-rex           "rex"           "/usr/local/lib/R/site-library" "1.2.0"      
-rJava         "rJava"         "/usr/local/lib/R/site-library" "0.9-13"     
-rlang         "rlang"         "/usr/local/lib/R/site-library" "0.4.7"      
-RMariaDB      "RMariaDB"      "/usr/local/lib/R/site-library" "1.0.9"      
-rmarkdown     "rmarkdown"     "/usr/local/lib/R/site-library" "2.3"        
-rmdshower     "rmdshower"     "/usr/local/lib/R/site-library" "2.1.1"      
-roxygen2      "roxygen2"      "/usr/local/lib/R/site-library" "7.1.1"      
-RPostgres     "RPostgres"     "/usr/local/lib/R/site-library" "1.2.0"      
-rprojroot     "rprojroot"     "/usr/local/lib/R/site-library" "1.3-2"      
-rsconnect     "rsconnect"     "/usr/local/lib/R/site-library" "0.8.16"     
-RSQLite       "RSQLite"       "/usr/local/lib/R/site-library" "2.2.0"      
-rstudioapi    "rstudioapi"    "/usr/local/lib/R/site-library" "0.11"       
-rticles       "rticles"       "/usr/local/lib/R/site-library" "0.14"       
-rversions     "rversions"     "/usr/local/lib/R/site-library" "2.0.2"      
-rvest         "rvest"         "/usr/local/lib/R/site-library" "0.3.6"      
-sass          "sass"          "/usr/local/lib/R/site-library" "0.2.0"      
-scales        "scales"        "/usr/local/lib/R/site-library" "1.1.1"      
-selectr       "selectr"       "/usr/local/lib/R/site-library" "0.4-2"      
-servr         "servr"         "/usr/local/lib/R/site-library" "0.17"       
-sessioninfo   "sessioninfo"   "/usr/local/lib/R/site-library" "1.1.1"      
-shiny         "shiny"         "/usr/local/lib/R/site-library" "1.5.0"      
-skimr         "skimr"         "/usr/local/lib/R/site-library" "2.1.2"      
-slam          "slam"          "/usr/local/lib/R/site-library" "0.1-47"     
-SnowballC     "SnowballC"     "/usr/local/lib/R/site-library" "0.7.0"      
-sourcetools   "sourcetools"   "/usr/local/lib/R/site-library" "0.1.7"      
-stringi       "stringi"       "/usr/local/lib/R/site-library" "1.4.6"      
-stringr       "stringr"       "/usr/local/lib/R/site-library" "1.4.0"      
-swirl         "swirl"         "/usr/local/lib/R/site-library" "2.4.5"      
-sys           "sys"           "/usr/local/lib/R/site-library" "3.4"        
-testit        "testit"        "/usr/local/lib/R/site-library" "0.11"       
-testthat      "testthat"      "/usr/local/lib/R/site-library" "2.3.2"      
-tibble        "tibble"        "/usr/local/lib/R/site-library" "3.0.3"      
-tidyr         "tidyr"         "/usr/local/lib/R/site-library" "1.1.1"      
-tidyselect    "tidyselect"    "/usr/local/lib/R/site-library" "1.1.0"      
-tidyverse     "tidyverse"     "/usr/local/lib/R/site-library" "1.3.0"      
-tinytex       "tinytex"       "/usr/local/lib/R/site-library" "0.25"       
-tm            "tm"            "/usr/local/lib/R/site-library" "0.7-7"      
-tufte         "tufte"         "/usr/local/lib/R/site-library" "0.6"        
-usdata        "usdata"        "/usr/local/lib/R/site-library" "0.1.0"      
-usethis       "usethis"       "/usr/local/lib/R/site-library" "1.6.1"      
-utf8          "utf8"          "/usr/local/lib/R/site-library" "1.1.4"      
-vctrs         "vctrs"         "/usr/local/lib/R/site-library" "0.3.2"      
-viridis       "viridis"       "/usr/local/lib/R/site-library" "0.5.1"      
-viridisLite   "viridisLite"   "/usr/local/lib/R/site-library" "0.3.0"      
-vroom         "vroom"         "/usr/local/lib/R/site-library" "1.2.1"      
-webshot       "webshot"       "/usr/local/lib/R/site-library" "0.5.2"      
-whisker       "whisker"       "/usr/local/lib/R/site-library" "0.4"        
-whoami        "whoami"        "/usr/local/lib/R/site-library" "1.3.0"      
-withr         "withr"         "/usr/local/lib/R/site-library" "2.2.0"      
-wordcloud     "wordcloud"     "/usr/local/lib/R/site-library" "2.6"        
-xaringan      "xaringan"      "/usr/local/lib/R/site-library" "0.16"       
-xfun          "xfun"          "/usr/local/lib/R/site-library" "0.16"       
-xml2          "xml2"          "/usr/local/lib/R/site-library" "1.3.2"      
-xmlparsedata  "xmlparsedata"  "/usr/local/lib/R/site-library" "1.0.3"      
-xopen         "xopen"         "/usr/local/lib/R/site-library" "1.0.0"      
-xtable        "xtable"        "/usr/local/lib/R/site-library" "1.8-4"      
-yaml          "yaml"          "/usr/local/lib/R/site-library" "2.2.1"      
-base          "base"          "/usr/local/lib/R/library"      "4.0.2"      
-boot          "boot"          "/usr/local/lib/R/library"      "1.3-25"     
-class         "class"         "/usr/local/lib/R/library"      "7.3-17"     
-cluster       "cluster"       "/usr/local/lib/R/library"      "2.1.0"      
-codetools     "codetools"     "/usr/local/lib/R/library"      "0.2-16"     
-compiler      "compiler"      "/usr/local/lib/R/library"      "4.0.2"      
-datasets      "datasets"      "/usr/local/lib/R/library"      "4.0.2"      
-foreign       "foreign"       "/usr/local/lib/R/library"      "0.8-80"     
-graphics      "graphics"      "/usr/local/lib/R/library"      "4.0.2"      
-grDevices     "grDevices"     "/usr/local/lib/R/library"      "4.0.2"      
-grid          "grid"          "/usr/local/lib/R/library"      "4.0.2"      
-KernSmooth    "KernSmooth"    "/usr/local/lib/R/library"      "2.23-17"    
-lattice       "lattice"       "/usr/local/lib/R/library"      "0.20-41"    
-MASS          "MASS"          "/usr/local/lib/R/library"      "7.3-51.6"   
-Matrix        "Matrix"        "/usr/local/lib/R/library"      "1.2-18"     
-methods       "methods"       "/usr/local/lib/R/library"      "4.0.2"      
-mgcv          "mgcv"          "/usr/local/lib/R/library"      "1.8-31"     
-nlme          "nlme"          "/usr/local/lib/R/library"      "3.1-148"    
-nnet          "nnet"          "/usr/local/lib/R/library"      "7.3-14"     
-parallel      "parallel"      "/usr/local/lib/R/library"      "4.0.2"      
-rpart         "rpart"         "/usr/local/lib/R/library"      "4.1-15"     
-spatial       "spatial"       "/usr/local/lib/R/library"      "7.3-12"     
-splines       "splines"       "/usr/local/lib/R/library"      "4.0.2"      
-stats         "stats"         "/usr/local/lib/R/library"      "4.0.2"      
-stats4        "stats4"        "/usr/local/lib/R/library"      "4.0.2"      
-survival      "survival"      "/usr/local/lib/R/library"      "3.1-12"     
-tcltk         "tcltk"         "/usr/local/lib/R/library"      "4.0.2"      
-tools         "tools"         "/usr/local/lib/R/library"      "4.0.2"      
-utils         "utils"         "/usr/local/lib/R/library"      "4.0.2"      
-> 
+> ip <- as.data.frame(installed.packages()[,c(1,3:4)])
+> rownames(ip) <- NULL
+> ip <- ip[is.na(ip$Priority),1:2,drop=FALSE]
+> print(ip, row.names=FALSE)
+      Package     Version
+    animation         2.6
+        arrow       1.0.0
+      askpass         1.1
+   assertthat       0.2.1
+    backports      1.1.10
+    base64enc       0.1-3
+           BH    1.72.0-3
+  BiocManager     1.30.10
+          bit    1.1-15.2
+        bit64     0.9-7.1
+       bitops       1.0-6
+         blob       1.2.1
+     blogdown        0.20
+     bookdown        0.20
+         brew       1.0-6
+        broom       0.7.1
+        callr       3.4.4
+   cellranger       1.1.0
+    checkmate       2.0.0
+          cli       2.0.2
+        clipr       0.7.0
+   colorspace       1.4-1
+   commonmark         1.7
+     corrplot        0.84
+         covr       3.5.0
+        cpp11       0.2.2
+       crayon       1.3.4
+  credentials       1.3.0
+    crosstalk     1.1.0.1
+         curl         4.3
+    cyclocomp       1.1.0
+   data.table      1.13.0
+          DBI       1.1.0
+       dbplyr       1.4.4
+         desc       1.2.0
+     devtools       2.3.1
+        dials       0.0.9
+   DiceDesign       1.8-1
+       digest      0.6.25
+       docopt       0.7.1
+        dplyr       1.0.2
+           DT        0.14
+       dtplyr       1.0.1
+     ellipsis       0.3.1
+     evaluate        0.14
+        fansi       0.4.1
+       farver       2.0.3
+      fastmap       1.0.1
+      forcats       0.5.0
+      foreach       1.5.0
+           fs       1.5.0
+          fst       0.9.2
+        furrr       0.1.0
+       future      1.19.1
+     generics       0.0.2
+         gert         0.3
+      ggplot2       3.3.2
+           gh       1.1.0
+        git2r      0.27.1
+      globals      0.13.0
+         glue       1.4.2
+        gower       0.2.2
+        GPfit       1.0-8
+    gradethis  0.1.0.9004
+       gtable       0.3.0
+      hardhat       0.1.4
+        haven       2.3.1
+        highr         0.8
+          hms       0.5.3
+    htmltools  0.5.0.9001
+  htmlwidgets       1.5.2
+       httpuv       1.5.4
+         httr       1.4.2
+       igraph       1.2.5
+        infer       0.5.3
+          ini       0.3.1
+        ipred       0.9-9
+      isoband       0.2.2
+    iterators      1.0.12
+     jsonlite       1.7.1
+        knitr        1.30
+     labeling         0.3
+       Lahman       8.0-0
+        later     1.1.0.1
+         lava       1.6.8
+     lazyeval       0.2.2
+       learnr 0.10.1.9006
+          lhs       1.1.0
+    lifecycle       0.2.0
+        lintr       2.0.1
+      listenv       0.8.0
+      littler      0.3.11
+    lubridate       1.7.9
+       magick       2.4.0
+     magrittr         1.5
+         maps       3.3.0
+     markdown         1.1
+      memoise       1.1.0
+         mime         0.9
+       miniUI     0.1.1.1
+    modeldata       0.0.2
+       modelr       0.1.8
+      munsell       0.5.0
+          NLP       0.2-0
+     numDeriv  2016.8-1.1
+ nycflights13       1.0.1
+      openssl       1.4.3
+      packrat       0.5.0
+      parsnip       0.1.3
+       pillar       1.4.6
+     pkgbuild       1.1.0
+    pkgconfig       2.0.3
+      pkgload       1.1.0
+        plogr       0.2.0
+         plyr       1.8.6
+       praise       1.0.0
+  prettyunits       1.1.1
+         pROC      1.16.2
+     processx       3.4.4
+      prodlim  2019.11.13
+     progress       1.2.2
+     promises       1.1.1
+           ps       1.3.4
+        purrr       0.3.4
+          qss  0.1.0.9000
+    qsslearnr  0.1.0.9003
+           R6       2.4.1
+     rappdirs       0.3.1
+    rcmdcheck       1.3.3
+ RColorBrewer       1.1-2
+         Rcpp       1.0.5
+        RCurl    1.98-1.2
+        readr       1.3.1
+       readxl       1.3.1
+      recipes      0.1.13
+      redland   1.0.17-11
+      rematch       1.0.1
+     rematch2       2.1.2
+      remotes       2.2.0
+         renv      0.12.0
+       reprex       0.3.0
+          rex       1.2.0
+        rJava      0.9-13
+        rlang       0.4.7
+     RMariaDB       1.0.9
+    rmarkdown         2.4
+    rmdshower       2.1.1
+     roxygen2       7.1.1
+    RPostgres       1.2.0
+    rprojroot       1.3-2
+      rsample       0.0.8
+    rsconnect      0.8.16
+      RSQLite       2.2.0
+   rstudioapi        0.11
+      rticles        0.14
+    rversions       2.0.2
+        rvest       0.3.6
+       scales       1.1.1
+      selectr       0.4-2
+        servr        0.17
+  sessioninfo       1.1.1
+        shiny       1.5.0
+         slam      0.1-47
+       slider       0.1.5
+    SnowballC       0.7.0
+  sourcetools       0.1.7
+      SQUAREM      2020.4
+      stringi       1.5.3
+      stringr       1.4.0
+        swirl       2.4.5
+          sys         3.4
+       testit        0.11
+     testthat       2.3.2
+       tibble       3.0.3
+   tidymodels       0.1.1
+        tidyr       1.1.2
+   tidyselect       1.1.0
+    tidyverse       1.3.0
+     timeDate    3043.102
+      tinytex        0.26
+           tm       0.7-7
+        tufte         0.6
+         tune       0.1.1
+      usethis       1.6.1
+         utf8       1.1.4
+        vctrs       0.3.4
+  viridisLite       0.3.0
+        vroom       1.2.1
+         warp       0.1.0
+      webshot       0.5.2
+      whisker         0.4
+       whoami       1.3.0
+        withr       2.3.0
+    wordcloud         2.6
+    workflows       0.2.0
+     xaringan        0.16
+         xfun        0.18
+         xml2       1.3.2
+ xmlparsedata       1.0.4
+        xopen       1.0.0
+       xtable       1.8-4
+         yaml       2.2.1
+    yardstick       0.0.7
+> quit()
 ```
