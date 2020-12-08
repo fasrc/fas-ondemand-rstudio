@@ -1,4 +1,4 @@
-FROM rocker/verse:4.0.2
+FROM rocker/verse:4.0.3
 
 ## adding stuff from  https://github.com/Bioconductor/bioconductor_docker/blob/master/Dockerfile
 
@@ -127,14 +127,28 @@ RUN apt-get update \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
 
-## Explicitly requested packages (e.g. STAT 104, GOV 50, GOV 51)
-RUN install2.r corrplot learnr
-RUN Rscript -e 'devtools::install_github("OI-Biostat/oi_biostat_data")' \
-        && Rscript -e 'devtools::install_github("rstudio-education/gradethis")' \
-        && Rscript -e 'devtools::install_github("kosukeimai/qss-package", build_vignettes=TRUE)' \
-        && Rscript -e 'devtools::install_github("rundel/learnrhash")' \
-        && Rscript -e 'devtools::install_github("davidkane9/PPBDS.data")'
-
 ## add a couple of collections of latex style files
 RUN  tlmgr install collection-latex && tlmgr install  collection-latexrecommended && tlmgr install  collection-latexextra
 
+## Requested packages for GOV 1005: Big Data
+#
+# Note that this container includes the dependencies for the following
+# course-specific packages: 
+# 	- https://github.com/PPBDS/primer.data
+# 	- https://github.com/PPBDS/primer.tutorials
+#
+# Students will be expected to install these packages themselves at the 
+# start of the semester and update as needed, although the dependencies
+# should already be present in the container.
+# 
+# To install the packages:
+# 	- remotes::install_github("PPBDS/primer.data")
+# 	- remotes::install_github("PPBDS/primer.tutorials")
+#
+# To view the dependencies:
+# 	- tools::package_dependencies("primer.tutorials", db = installed.packages())
+#
+RUN install2.r -e fs curl corrplot learnr \
+	&& install2.r -e tidyverse tidymodels lubridate stringr shiny gapminder skimr viridis ggthemes fivethirtyeight nycflights13 gt base64enc testthat rmarkdown nnet rstanarm 
+#	&& Rscript -e 'remotes::install_github("PPBDS/primer.data")' \
+#	&& Rscript -e 'remotes::install_github("PPBDS/primer.tutorials")' 
