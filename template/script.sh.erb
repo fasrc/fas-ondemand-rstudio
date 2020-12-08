@@ -10,6 +10,13 @@ export container_image=$container_folder/<%= context.rstudio_version %>
 # Set working directory to home directory
 cd "${HOME}"
 
+# Add symlink to shared data folder containing datasets.
+# This was requested by Prof Kane so that students don't have to download the
+# datasets. This is intended to be read-only by students.
+if [ -e "$COURSE_SCRATCH_FOLDER/data" ] && [ ! -e "$HOME/data" ]; then
+    ln -s $COURSE_SCRATCH_FOLDER/data $HOME/data
+fi
+
 ## some configuration requested by Prof Kane
 if ! [ -f $HOME/.config/rstudio/rstudio-prefs.json ] 
 then 
