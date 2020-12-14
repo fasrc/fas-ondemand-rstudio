@@ -17,6 +17,15 @@ if [ -e "$COURSE_SCRATCH_FOLDER/data" ] && [ ! -e "$HOME/data" ]; then
     ln -s $COURSE_SCRATCH_FOLDER/data $HOME/data
 fi
 
+# Simplify bash prompt as requested by Prof Kane
+if ! [ -f $HOME/.bash_prompt ]; then
+    echo 'export PS1="$ "' > $HOME/.bash_prompt
+fi
+if ! grep -q "^. ~/.bash_prompt" $HOME/.bashrc; then 
+    echo ". ~/.bash_prompt" >> $HOME/.bashrc
+fi
+
+
 ## some configuration requested by Prof Kane
 if ! [ -f $HOME/.config/rstudio/rstudio-prefs.json ] 
 then 
