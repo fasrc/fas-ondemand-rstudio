@@ -1,5 +1,7 @@
 # Dockerfile for R 4.0.3 - GOV 1005
 
+## Build
+
 To build the Dockerfile:
 
 ```sh
@@ -22,6 +24,8 @@ $ docker push harvardat/atg-rstudio-gov1005:4.0.3-$GIT_COMMIT_HASH
 $ docker push harvardat/atg-rstudio-gov1005:4.0.3
 $ docker push harvardat/atg-rstudio-gov1005:latest
 ```
+
+## <a name="installed-packages"></a> Installed Packages
 
 The current image contains the following packages:
 
