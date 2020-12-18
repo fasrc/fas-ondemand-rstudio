@@ -25,7 +25,7 @@ $ docker push harvardat/atg-rstudio-gov1005:4.0.3
 $ docker push harvardat/atg-rstudio-gov1005:latest
 ```
 
-## <a name="installed-packages"></a> Installed Packages
+## Installed Packages
 
 The current image contains the following packages:
 
