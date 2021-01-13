@@ -5,24 +5,24 @@
 To build the Dockerfile:
 
 ```sh
-$ docker build -t harvardat/atg-rstudio-gov1005:4.0.3 .
+$ docker build -t harvardat/rstudio-gov1005:4.0.3 .
 ```
 
 To run the image:
 
 ```
-$ docker run --rm -p 8787:8787 -e PASSWORD=yourpasswordhere harvardat/atg-rstudio-gov1005:4.0.3
+$ docker run --rm -p 8787:8787 -e PASSWORD=yourpasswordhere harvardat/rstudio-gov1005:4.0.3
 ```
 
 Each image should be tagged with the git commit and pushed to docker hub:
 
 ```sh
 $ export GIT_COMMIT_HASH=$(git log -1 --format=%h)
-$ docker tag harvardat/atg-rstudio-gov1005:4.0.3 harvardat/atg-rstudio-gov1005:4.0.3-$GIT_COMMIT_HASH
-$ docker tag harvardat/atg-rstudio-gov1005:4.0.3 harvardat/atg-rstudio-gov1005:latest
-$ docker push harvardat/atg-rstudio-gov1005:4.0.3-$GIT_COMMIT_HASH
-$ docker push harvardat/atg-rstudio-gov1005:4.0.3
-$ docker push harvardat/atg-rstudio-gov1005:latest
+$ docker tag harvardat/rstudio-gov1005:4.0.3 harvardat/rstudio-gov1005:4.0.3-$GIT_COMMIT_HASH
+$ docker tag harvardat/rstudio-gov1005:4.0.3 harvardat/rstudio-gov1005:latest
+$ docker push harvardat/rstudio-gov1005:4.0.3-$GIT_COMMIT_HASH
+$ docker push harvardat/rstudio-gov1005:4.0.3
+$ docker push harvardat/rstudio-gov1005:latest
 ```
 
 ## Installed Packages
@@ -30,7 +30,7 @@ $ docker push harvardat/atg-rstudio-gov1005:latest
 The current image contains the following packages:
 
 ```
-$ docker run --rm -ti harvardat/atg-rstudio-gov1005:4.0.3 R
+$ docker run --rm -ti harvardat/rstudio-gov1005:4.0.3 R
 
 R version 4.0.3 (2020-06-22) -- "Taking Off Again"
 Copyright (C) 2020 The R Foundation for Statistical Computing
