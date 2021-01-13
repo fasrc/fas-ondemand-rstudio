@@ -128,7 +128,10 @@ RUN apt-get update \
 	&& rm -rf /var/lib/apt/lists/*
 
 ## add a couple of collections of latex style files
-RUN  tlmgr install collection-latex && tlmgr install  collection-latexrecommended && tlmgr install  collection-latexextra
+RUN tlmgr update --self \
+	&& tlmgr install collection-latex \
+	&& tlmgr install collection-latexrecommended \
+	&& tlmgr install collection-latexextra
 
 ## Requested packages for GOV 1005: Big Data
 #
@@ -149,6 +152,6 @@ RUN  tlmgr install collection-latex && tlmgr install  collection-latexrecommende
 # 	- tools::package_dependencies("primer.tutorials", db = installed.packages())
 #
 RUN install2.r -e fs curl corrplot learnr \
-	&& install2.r -e tidyverse tidymodels lubridate stringr shiny gapminder skimr viridis ggthemes fivethirtyeight nycflights13 gt base64enc testthat rmarkdown nnet rstanarm 
-#	&& Rscript -e 'remotes::install_github("PPBDS/primer.data")' \
-#	&& Rscript -e 'remotes::install_github("PPBDS/primer.tutorials")' 
+	&& install2.r -e tidyverse tidymodels lubridate stringr shiny gapminder skimr viridis ggthemes fivethirtyeight nycflights13 gt base64enc testthat rmarkdown nnet rstanarm usethis png tidybayes \  
+	&& Rscript -e 'remotes::install_github("PPBDS/primer.data")' \
+	&& Rscript -e 'remotes::install_github("PPBDS/primer.tutorials")' 
