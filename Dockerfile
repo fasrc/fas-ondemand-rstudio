@@ -133,6 +133,18 @@ RUN tlmgr update --self \
 	&& tlmgr install collection-latexrecommended \
 	&& tlmgr install collection-latexextra
 
+## Explicitly requested packages 
+# 
+# For example:
+#
+#  RUN install2.r corrplot learnr
+#  RUN Rscript -e 'devtools::install_github("OI-Biostat/oi_biostat_data")' \
+#        && Rscript -e 'devtools::install_github("rstudio-education/gradethis")' \
+#        && Rscript -e 'devtools::install_github("kosukeimai/qss-package", build_vignettes=TRUE)' \
+#        && Rscript -e 'devtools::install_github("rundel/learnrhash")' \
+#        && Rscript -e 'devtools::install_github("davidkane9/PPBDS.data")'
+#
+
 ## Requested packages for GOV 1005: Big Data
 #
 # Note that this container includes the dependencies for the following
