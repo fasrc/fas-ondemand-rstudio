@@ -134,6 +134,17 @@ RUN tlmgr update --self \
 	&& tlmgr install collection-latexextra
 
 ## Explicitly requested packages 
-## 	DPI 610: Data Science for Politics (cross-listed as GOV 1003)
+# 
+# For example:
+#
+#  RUN install2.r corrplot learnr
+#  RUN Rscript -e 'devtools::install_github("OI-Biostat/oi_biostat_data")' \
+#        && Rscript -e 'devtools::install_github("rstudio-education/gradethis")' \
+#        && Rscript -e 'devtools::install_github("kosukeimai/qss-package", build_vignettes=TRUE)' \
+#        && Rscript -e 'devtools::install_github("rundel/learnrhash")' \
+#        && Rscript -e 'devtools::install_github("davidkane9/PPBDS.data")'
+#
+
+## Requested packages for DPI 610: Data Science for Politics (cross-listed as GOV 1003)
 RUN install2.r -e fs curl corrplot learnr \
 	&& install2.r caTools pROC glmnet survey ggplot2 sf lwgeom data.table knit kableExtra stargazer caret foreign tidyverse
