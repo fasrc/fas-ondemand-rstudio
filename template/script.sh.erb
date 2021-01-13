@@ -10,6 +10,59 @@ export container_image=$container_folder/<%= context.rstudio_version %>
 # Set working directory to home directory
 cd "${HOME}"
 
+# Add symlink to a shared data folder containing datasets
+if [ ! -z "$COURSE_SCRATCH_FOLDER" ] && [ -e "$COURSE_SCRATCH_FOLDER/data" ] && [ ! -e "$HOME/data" ]; then
+    ln -s $COURSE_SCRATCH_FOLDER/data $HOME/data
+fi
+
+# Simplify bash prompt
+if ! [ -f $HOME/.bash_prompt ]; then
+    echo 'export PS1="$ "' > $HOME/.bash_prompt
+fi
+if ! grep -q "^. ~/.bash_prompt" $HOME/.bashrc; then 
+    echo ". ~/.bash_prompt" >> $HOME/.bashrc
+fi
+
+
+## some configuration requested by Prof Kane
+if ! [ -f $HOME/.config/rstudio/rstudio-prefs.json ] 
+then 
+mkdir -p $HOME/.config/rstudio
+cat > $HOME/.config/rstudio/rstudio-prefs.json <<EOF
+{
+    "panes": {
+        "quadrants": [
+            "Source",
+            "Console",
+            "TabSet1",
+            "TabSet2"
+        ],
+        "tabSet1": [
+            "Environment",
+            "History",
+            "Connections",
+            "Build",
+            "VCS",
+            "Tutorial",
+            "Presentation"
+        ],
+        "tabSet2": [
+            "Files",
+            "Plots",
+            "Packages",
+            "Help",
+            "Viewer"
+        ],
+        "console_left_on_top": false,
+        "console_right_on_top": true
+    },
+    "save_workspace": "never",
+    "load_workspace": false,
+    "posix_terminal_shell": "bash"
+}
+EOF
+fi
+
 set -x
 # Launch the RStudio Server
 echo "Starting up rserver..."
@@ -32,6 +85,14 @@ cat >${WORKDIR}/Renviron.site <<END
 R_LIBS_USER=$R_LIBS_USER
 END
 
+
+cat >${WORKDIR}/rserver.conf <<END
+# Server Configuration File
+rsession-which-r=/usr/local/bin/R
+auth-timeout-minutes=0
+auth-stay-signed-in-days=10
+END
+
 # rsession needs to start with OMP_NUM_THREADS set to prevent OpenBLAS
 # (and any other OpenMP-enhanced libraries used by R) from spawning too many
 # threads. a wrapper script is created for rsession.
@@ -49,7 +110,7 @@ chmod +x ${WORKDIR}/rsession.sh
 export SING_BINDS=" --bind ${WORKDIR}/logs:/var/log/rstudio-server --bind ${WORKDIR}/var/run:/var/run --bind ${WORKDIR}/tmp:/tmp"
 
 ## use our specific configs
-export SING_BINDS="$SING_BINDS --bind ${WORKDIR}/Renviron.site:${R_HOME}/etc/Renviron.site --bind ${WORKDIR}/rsession.sh:/etc/rstudio/rsession.sh"
+export SING_BINDS="$SING_BINDS --bind ${WORKDIR}/rserver.conf:/etc/rstudio/rserver.conf --bind ${WORKDIR}/Renviron.site:${R_HOME}/etc/Renviron.site --bind ${WORKDIR}/rsession.sh:/etc/rstudio/rsession.sh"
 
 ## users can chose if starting from a fresh config or keep the default in HOME/.rstudio
 <%- if !context.custom_vanillaconf.to_i.zero? -%>

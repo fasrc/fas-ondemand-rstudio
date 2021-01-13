@@ -1,9 +1,8 @@
 ---
-name: RStudio Server
+name: RStudio Server - DPI 610
 category: Interactive Apps
 subcategory: Servers
 role: batch_connect
 description: |
   This app will launch [RStudio Server] on a compute node on the  FAS-RC Academic cluster:
-
   [RStudio Server]: https://www.rstudio.com/products/rstudio-server/
