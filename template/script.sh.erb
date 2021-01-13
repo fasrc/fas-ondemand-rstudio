@@ -10,14 +10,12 @@ export container_image=$container_folder/<%= context.rstudio_version %>
 # Set working directory to home directory
 cd "${HOME}"
 
-# Add symlink to shared data folder containing datasets.
-# This was requested by Prof Kane so that students don't have to download the
-# datasets. This is intended to be read-only by students.
-if [ -e "$COURSE_SCRATCH_FOLDER/data" ] && [ ! -e "$HOME/data" ]; then
+# Add symlink to a shared data folder containing datasets
+if [ ! -z "$COURSE_SCRATCH_FOLDER" ] && [ -e "$COURSE_SCRATCH_FOLDER/data" ] && [ ! -e "$HOME/data" ]; then
     ln -s $COURSE_SCRATCH_FOLDER/data $HOME/data
 fi
 
-# Simplify bash prompt as requested by Prof Kane
+# Simplify bash prompt
 if ! [ -f $HOME/.bash_prompt ]; then
     echo 'export PS1="$ "' > $HOME/.bash_prompt
 fi
