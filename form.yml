@@ -1,5 +1,5 @@
 ---
-title: "Rstudio Server - DPI 610"
+title: "Rstudio Server - Dpi610"
 cluster: "academic"
 attributes:
   modules: null
@@ -16,7 +16,7 @@ attributes:
     widget: select
     label: "rstudio version"
     options:
-      - [ "R 4.0.3 - DPI 610", "harvardat_atg-rstudio-gov1005_4.0.3-82f77a1.sif"]
+      - [ "R 4.0.3 - Dpi610", "harvardat_atg-rstudio-gov1005_4.0.3-82f77a1.sif"]
   custom_vanillaconf: 0
 
 form:
