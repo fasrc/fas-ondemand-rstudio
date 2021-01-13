@@ -1,4 +1,4 @@
-FROM rocker/verse:4.0.2
+FROM rocker/verse:4.0.3
 
 ## adding stuff from  https://github.com/Bioconductor/bioconductor_docker/blob/master/Dockerfile
 
@@ -127,6 +127,12 @@ RUN apt-get update \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
 
+## add a couple of collections of latex style files
+RUN tlmgr update --self \
+	&& tlmgr install collection-latex \
+	&& tlmgr install collection-latexrecommended \
+	&& tlmgr install collection-latexextra
+
 ## Explicitly requested packages (e.g. STAT 104, GOV 50, GOV 51)
 RUN install2.r corrplot learnr
 RUN Rscript -e 'devtools::install_github("OI-Biostat/oi_biostat_data")' \
@@ -134,7 +140,4 @@ RUN Rscript -e 'devtools::install_github("OI-Biostat/oi_biostat_data")' \
         && Rscript -e 'devtools::install_github("kosukeimai/qss-package", build_vignettes=TRUE)' \
         && Rscript -e 'devtools::install_github("rundel/learnrhash")' \
         && Rscript -e 'devtools::install_github("davidkane9/PPBDS.data")'
-
-## add a couple of collections of latex style files
-RUN  tlmgr install collection-latex && tlmgr install  collection-latexrecommended && tlmgr install  collection-latexextra
 
