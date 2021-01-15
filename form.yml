@@ -16,7 +16,7 @@ attributes:
     widget: select
     label: "rstudio version"
     options:
-      - [ "R 4.0.3 - datafest", "hdatafest_2021_4c0357b1519.sif"]
+      - [ "R 4.0.3 - datafest", "datafest_2021_4c0357b15194.sif"]
   custom_vanillaconf: 0
 
 form:
