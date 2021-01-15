@@ -11,8 +11,8 @@ export container_image=$container_folder/<%= context.rstudio_version %>
 cd "${HOME}"
 
 # Add symlink to a shared data folder containing datasets
-if [ ! -z "$COURSE_SCRATCH_FOLDER" ] && [ -e "$COURSE_SCRATCH_FOLDER/data" ] && [ ! -e "$HOME/data" ]; then
-    ln -s $COURSE_SCRATCH_FOLDER/data $HOME/data
+if [ ! -z "$COURSE_SCRATCH_FOLDER" ] && [ -e "$COURSE_SCRATCH_FOLDER/shared_data" ] && [ ! -e "$HOME/shared_data" ]; then
+    ln -s $COURSE_SCRATCH_FOLDER/data $HOME/shared_data
 fi
 
 # Simplify bash prompt
@@ -43,7 +43,6 @@ cat > $HOME/.config/rstudio/rstudio-prefs.json <<EOF
             "Connections",
             "Build",
             "VCS",
-            "Tutorial",
             "Presentation"
         ],
         "tabSet2": [

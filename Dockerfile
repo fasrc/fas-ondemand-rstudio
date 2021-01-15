@@ -133,6 +133,25 @@ RUN tlmgr update --self \
 	&& tlmgr install collection-latexrecommended \
 	&& tlmgr install collection-latexextra
 
+RUN Rscript -e 'install.packages("dataverse")' \
+    && Rscript -e 'install.packages("viridis")' \
+    && Rscript -e 'install.packages("sf")' \
+    && Rscript -e 'install.packages("remotes")' \
+    && Rscript -e 'install.packages("leaflet")' \
+    && Rscript -e 'install.packages("mapview")' \
+    && Rscript -e 'install.packages("htmltools")' \
+    && Rscript -e 'install.packages("htmlwidgets")' \
+    && Rscript -e 'install.packages("tigris")' \
+    && Rscript -e 'install.packages("glmmTMB")' \
+    && Rscript -e 'install.packages("effects")' \
+    && Rscript -e 'install.packages("DHARMa")' \
+    && Rscript -e 'install.packages("rmarkdown")' \
+    && Rscript -e 'install.packages("tidycensus")' \
+    && Rscript -e 'install.packages("tidymodels")' \
+    && Rscript -e 'install.packages("tidyverse")' \
+    && Rscript -e 'install.packages("BiocManager")' \
+    && Rscript -e 'install.packages("pheatmap")'
+
 ## Explicitly requested packages 
 # 
 # For example:
@@ -145,25 +164,3 @@ RUN tlmgr update --self \
 #        && Rscript -e 'devtools::install_github("davidkane9/PPBDS.data")'
 #
 
-## Requested packages for GOV 1005: Big Data
-#
-# Note that this container includes the dependencies for the following
-# course-specific packages: 
-# 	- https://github.com/PPBDS/primer.data
-# 	- https://github.com/PPBDS/primer.tutorials
-#
-# Students will be expected to install these packages themselves at the 
-# start of the semester and update as needed, although the dependencies
-# should already be present in the container.
-# 
-# To install the packages:
-# 	- remotes::install_github("PPBDS/primer.data")
-# 	- remotes::install_github("PPBDS/primer.tutorials")
-#
-# To view the dependencies:
-# 	- tools::package_dependencies("primer.tutorials", db = installed.packages())
-#
-RUN install2.r -e fs curl corrplot learnr \
-	&& install2.r -e tidyverse tidymodels lubridate stringr shiny gapminder skimr viridis ggthemes fivethirtyeight nycflights13 gt base64enc testthat rmarkdown nnet rstanarm usethis png tidybayes \  
-	&& Rscript -e 'remotes::install_github("PPBDS/primer.data")' \
-	&& Rscript -e 'remotes::install_github("PPBDS/primer.tutorials")' 
