@@ -142,7 +142,7 @@ RUN Rscript -e 'install.packages("dataverse")' \
     && Rscript -e 'install.packages("htmltools")' \
     && Rscript -e 'install.packages("htmlwidgets")' \
     && Rscript -e 'install.packages("tigris")' \
-    && Rscript -e 'install.packages("glmmTMB")' \
+    && Rscript -e 'install.packages(c("Matrix","glmmTMB"))' \
     && Rscript -e 'install.packages("effects")' \
     && Rscript -e 'install.packages("DHARMa")' \
     && Rscript -e 'install.packages("rmarkdown")' \
@@ -151,16 +151,3 @@ RUN Rscript -e 'install.packages("dataverse")' \
     && Rscript -e 'install.packages("tidyverse")' \
     && Rscript -e 'install.packages("BiocManager")' \
     && Rscript -e 'install.packages("pheatmap")'
-
-## Explicitly requested packages 
-# 
-# For example:
-#
-#  RUN install2.r corrplot learnr
-#  RUN Rscript -e 'devtools::install_github("OI-Biostat/oi_biostat_data")' \
-#        && Rscript -e 'devtools::install_github("rstudio-education/gradethis")' \
-#        && Rscript -e 'devtools::install_github("kosukeimai/qss-package", build_vignettes=TRUE)' \
-#        && Rscript -e 'devtools::install_github("rundel/learnrhash")' \
-#        && Rscript -e 'devtools::install_github("davidkane9/PPBDS.data")'
-#
-
