@@ -12,7 +12,7 @@ cd "${HOME}"
 
 # Add symlink to a shared data folder containing datasets
 if [ ! -z "$COURSE_SCRATCH_FOLDER" ] && [ -e "$COURSE_SCRATCH_FOLDER/shared_data" ] && [ ! -e "$HOME/shared_data" ]; then
-    ln -s $COURSE_SCRATCH_FOLDER/data $HOME/shared_data
+    ln -s $COURSE_SCRATCH_FOLDER/shared_data $HOME/shared_data
 fi
 
 # Simplify bash prompt
