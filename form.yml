@@ -1,10 +1,10 @@
 ---
-title: "Rstudio Server - datafest"
+title: "Rstudio Server - Datafest 2021"
 cluster: "academic"
 attributes:
   modules: null
   extra_rstudio_args: ""
-  custom_time: "2-00:00"
+  custom_time: "4-00:00"
   bc_queue: "academic"
   custom_email_address: null
   custom_memory_per_node: 16
