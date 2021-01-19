@@ -151,19 +151,21 @@ RUN tlmgr update --self \
 # course-specific packages: 
 # 	- https://github.com/PPBDS/primer.data
 # 	- https://github.com/PPBDS/primer.tutorials
-#
-# Students will be expected to install these packages themselves at the 
-# start of the semester and update as needed, although the dependencies
-# should already be present in the container.
 # 
 # To install the packages:
-# 	- remotes::install_github("PPBDS/primer.data")
-# 	- remotes::install_github("PPBDS/primer.tutorials")
+# 	- remotes::install_github(c("PPBDS/primer.data", "PPBDS/primer.tutorials"))
 #
 # To view the dependencies:
 # 	- tools::package_dependencies("primer.tutorials", db = installed.packages())
 #
-RUN install2.r -e fs curl corrplot learnr \
+# Important note about "learnr" package: 
+#	- The latest release is v0.10.1 (Feb 2020), but we need to include the bug fix
+#	  for https://github.com/rstudio/learnr/issues/347 which is only available by
+#	  installing from source. This is why we are installing the latest source
+#	  release from github (latest master as of Jan 2021).
+#
+RUN install2.r -e fs curl corrplot \
 	&& install2.r -e tidyverse tidymodels lubridate stringr shiny gapminder skimr viridis ggthemes fivethirtyeight nycflights13 gt base64enc testthat rmarkdown nnet rstanarm usethis png tidybayes \  
+	&& Rscript -e 'remotes::install_github("rstudio/learnr", ref="6694842d8b9a74fbff92ef8a64a49adcc5a30199")' \
 	&& Rscript -e 'remotes::install_github("PPBDS/primer.data")' \
 	&& Rscript -e 'remotes::install_github("PPBDS/primer.tutorials")' 
