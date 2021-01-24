@@ -39,7 +39,7 @@ attributes:
     label: "rstudio version"
     help: "select the container you want to run"
     options:
-      - [ "R 4.0.3", "harvardat_rstudio-master_c44a8df4.sif"]
+      - [ "R 4.0.3", "fasrc-rstudio_seas_es_ada9cd2.sif"]
   custom_vanillaconf:
     label: "Start rstudio with a new configuration"
     widget: check_box

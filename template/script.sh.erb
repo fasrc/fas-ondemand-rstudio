@@ -3,8 +3,6 @@
 #
 
 export container_folder=${CONTAINER_REPO}/${COURSE}
-## when you test new installs you probaby want to drop the images locally in your home folder
-#export container_folder=$HOME/Programs/containers/fasrc_sandbox_rstudio/
 export container_image=$container_folder/<%= context.rstudio_version %>
 
 # Set working directory to home directory
