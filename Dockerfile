@@ -165,8 +165,9 @@ RUN tlmgr update --self \
 #	  installing from source. This is why we are installing the latest source
 #	  release from github (latest master as of Jan 2021).
 #
+
 RUN install2.r -e fs curl corrplot \
-	&& install2.r -e tidyverse tidymodels lubridate stringr shiny gapminder skimr viridis ggthemes fivethirtyeight nycflights13 gt base64enc testthat rmarkdown nnet rstanarm usethis png tidybayes \  
+	&& install2.r -e base64enc fivethirtyeight gapminder ggthemes grid gt gt infer lubridate nnet nycflights13 png readr readxl rlang rmarkdown rstanarm shiny skimr stringr testthat tidybayes tidymodels tidyverse usethis viridis \  
 	&& Rscript -e 'remotes::install_github("rstudio/learnr", ref="6694842d8b9a74fbff92ef8a64a49adcc5a30199")' \
 	&& Rscript -e 'remotes::install_github("PPBDS/primer.data")' \
 	&& Rscript -e 'remotes::install_github("PPBDS/primer.tutorials")' 
