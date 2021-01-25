@@ -28,12 +28,6 @@ attributes:
     widget: number_field
     help: "Number of Cpus to allocate"
   custom_num_gpus: 0
-  custom_reservation:
-    label: Reservation
-    widget: text_field
-  bc_account:
-    label: "Slurm Account"
-    help: "If you are not in multiple labs please leave this blank."
   rstudio_version:
     widget: select
     label: "rstudio version"
@@ -60,7 +54,3 @@ form:
   - rstudio_version
   - custom_vanillaconf
   - custom_num_gpus
-  - bc_email_on_started
-  - custom_email_address
-  - custom_reservation
-  - bc_account
