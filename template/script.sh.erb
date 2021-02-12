@@ -10,6 +10,54 @@ export container_image=$container_folder/<%= context.rstudio_version %>
 # Set working directory to home directory
 cd "${HOME}"
 
+# Simplify bash prompt
+if ! [ -f $HOME/.bash_prompt ]; then
+    echo 'export PS1="$ "' > $HOME/.bash_prompt
+fi
+if ! grep -q "^. ~/.bash_prompt" $HOME/.bashrc; then 
+    echo ". ~/.bash_prompt" >> $HOME/.bashrc
+fi
+
+
+## some configuration requested by Prof Kane
+if ! [ -f $HOME/.config/rstudio/rstudio-prefs.json ] 
+then 
+mkdir -p $HOME/.config/rstudio
+cat > $HOME/.config/rstudio/rstudio-prefs.json <<EOF
+{
+    "panes": {
+        "quadrants": [
+            "Source",
+            "Console",
+            "TabSet1",
+            "TabSet2"
+        ],
+        "tabSet1": [
+            "Environment",
+            "History",
+            "Connections",
+            "Build",
+            "VCS",
+            "Tutorial",
+            "Presentation"
+        ],
+        "tabSet2": [
+            "Files",
+            "Plots",
+            "Packages",
+            "Help",
+            "Viewer"
+        ],
+        "console_left_on_top": false,
+        "console_right_on_top": true
+    },
+    "save_workspace": "never",
+    "load_workspace": false,
+    "posix_terminal_shell": "bash"
+}
+EOF
+fi
+
 set -x
 # Launch the RStudio Server
 echo "Starting up rserver..."
@@ -24,12 +72,20 @@ mkdir -p $R_LIBS_USER
 # Need a unique /tmp for this job for /tmp/rstudio-rsession & /tmp/rstudio-server
 WORKDIR=/scratch/${USER}/${SLURM_JOB_ID}
 mkdir -m 700 -p ${WORKDIR}/tmp  
-mkdir -p ${WORKDIR}/var/run/{lock/rstudio-server,rstudio-server/rstudio-rsession,mount,systemd} ${WORKDIR}/logs
+mkdir -p ${WORKDIR}/var/run/{lock/rstudio-server,rstudio-server/rstudio-rsession,mount,systemd} ${WORKDIR}/var/lib/rstudio-server ${WORKDIR}/logs 
 
 # https://github.com/rocker-org/rocker-versioned/issues/153
 # override R_LIBS_USER in /etc/R/Renviron.site
 cat >${WORKDIR}/Renviron.site <<END
 R_LIBS_USER=$R_LIBS_USER
+END
+
+
+cat >${WORKDIR}/rserver.conf <<END
+# Server Configuration File
+rsession-which-r=/usr/local/bin/R
+auth-timeout-minutes=0
+auth-stay-signed-in-days=10
 END
 
 # rsession needs to start with OMP_NUM_THREADS set to prevent OpenBLAS
@@ -45,11 +101,32 @@ END
 
 chmod +x ${WORKDIR}/rsession.sh
 
+# [Rstudio 1.4] database is required
+cat > ${WORKDIR}/database.conf <<END
+provider=sqlite
+directory=/var/lib/rstudio-server
+END
+
+# [Rstudio 1.4] configure logging
+cat > ${WORKDIR}/logging.conf <<END
+[@rserver]
+log-level=info
+max-size-mb=10
+END
+
+# [Rstudio 1.4] Note that user storage has moved from ~/.rstudio to ~/.local/share/rstudio
+# To keep user storage in the same location, set the RSTUDIO_DATA_HOME env variable.
+# However, it may be best to keep storage separate rather than risking data corruption.
+# See also:
+#     https://docs.rstudio.com/ide/server-pro/r-sessions.html#user-state-storage
+#     https://support.rstudio.com/hc/en-us/articles/360062132513-Rolling-back-to-a-previous-version-from-RStudio-IDE-v1-4 
+# export SINGULARITYENV_RSTUDIO_DATA_HOME="$HOME/.rstudio"
+
 ## some binds that are necessary for running with singularity
-export SING_BINDS=" --bind ${WORKDIR}/logs:/var/log/rstudio-server --bind ${WORKDIR}/var/run:/var/run --bind ${WORKDIR}/tmp:/tmp"
+export SING_BINDS=" --bind ${WORKDIR}/logs:/var/log/rstudio-server --bind ${WORKDIR}/var/run:/var/run --bind ${WORKDIR}/var/lib/rstudio-server:/var/lib/rstudio-server  --bind ${WORKDIR}/tmp:/tmp"
 
 ## use our specific configs
-export SING_BINDS="$SING_BINDS --bind ${WORKDIR}/Renviron.site:${R_HOME}/etc/Renviron.site --bind ${WORKDIR}/rsession.sh:/etc/rstudio/rsession.sh"
+export SING_BINDS="$SING_BINDS --bind ${WORKDIR}/rserver.conf:/etc/rstudio/rserver.conf --bind ${WORKDIR}/database.conf:/etc/rstudio/database.conf --bind ${WORKDIR}/Renviron.site:${R_HOME}/etc/Renviron.site --bind ${WORKDIR}/rsession.sh:/etc/rstudio/rsession.sh --bind ${WORKDIR}/logging.conf:/etc/rstudio/logging.conf"
 
 ## users can chose if starting from a fresh config or keep the default in HOME/.rstudio
 <%- if !context.custom_vanillaconf.to_i.zero? -%>

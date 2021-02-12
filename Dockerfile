@@ -99,22 +99,7 @@ RUN apt-get update \
 	&& rm -rf /var/lib/apt/lists/*
 
 ## Python installations
-RUN apt-get update \
-	&& apt-get install -y software-properties-common \
-	&& add-apt-repository universe \
-	&& apt-get update \
-	&& apt-get -y --no-install-recommends install python2 python-dev \
-	&& curl https://bootstrap.pypa.io/get-pip.py --output get-pip.py \
-	&& python2 get-pip.py \
-	&& pip2 install wheel \
-	## Install sklearn and pandas on python
-	&& pip2 install sklearn \
-	pandas \
-	pyyaml \
-	cwltool \
-	&& apt-get clean \
-	&& rm -rf /var/lib/apt/lists/* \
-	&& rm -rf get-pip.py
+RUN python3 -m pip install scikit-learn pandas pyyaml cwltool
 
 ## FIXME
 ## These two libraries don't install in the above section--WHY?
@@ -145,3 +130,6 @@ RUN tlmgr update --self \
 #        && Rscript -e 'devtools::install_github("davidkane9/PPBDS.data")'
 #
 
+## Requested packages for OEB 275R: Phylogenetics and Phylogeography in the Era of Genomics
+
+RUN install2.r -e fs curl corrplot tidyverse ape phangorn phytools geiger
