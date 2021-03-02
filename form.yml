@@ -7,7 +7,13 @@ attributes:
   custom_time: "2-00:00"
   bc_queue: "academic"
   custom_email_address: null
-  custom_memory_per_node: 16
+  custom_memory_per_node:
+    label: Memory Allocation in GB
+    value: 16
+    min:   4
+    step:  1
+    max:   32
+    widget: number_field
   custom_num_cores: 8
   custom_num_gpus: 0
   custom_reservation: null
