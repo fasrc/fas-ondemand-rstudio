@@ -1,48 +1,29 @@
 ---
-title: "Rstudio Server"
+title: "Rstudio Server - Scrb155"
 cluster: "academic"
 attributes:
   modules: null
   extra_rstudio_args: ""
-  custom_time:
-    label: "Allocated Time (expressed in MM , or HH:MM:SS , or DD-HH:MM)."
-    value: "04:00:00"
-    widget: text_field
+  custom_time: "2-00:00"
   bc_queue: "academic"
-  custom_email_address:
-    label: email address for status notification
-    widget: text_field
+  custom_email_address: null
   custom_memory_per_node:
     label: Memory Allocation in GB
-    value: 4
-    min:   1
+    value: 16
+    min:   4
     step:  1
     max:   32
     widget: number_field
-  custom_num_cores:
-    label: Number of cores
-    value: 1
-    min:   1
-    step:  1
-    max:   16
-    widget: number_field
-    help: "Number of Cpus to allocate"
+  custom_num_cores: 8
   custom_num_gpus: 0
+  custom_reservation: null
+  bc_account: null
   rstudio_version:
     widget: select
     label: "rstudio version"
-    help: "select the container you want to run"
     options:
-      - [ "R 4.0.3", "harvardat_rstudio-master_c44a8df4.sif"]
-  custom_vanillaconf:
-    label: "Start rstudio with a new configuration"
-    widget: check_box
-    value: 1
-    help: |
-          **_Checking this box will start rstudio with a fresh configuration._** 
-          
-          This is useful if you need to run different instances at the same time with different configurations.<br> 
-          Leave the box unchecked if you want rstudio to start with the default configuration you have in your ~/.rstudio
+      - [ "R 4.0.3 - Scrb155", "harvardat_rstudio-master_5d64165f.sif"]
+  custom_vanillaconf: 0
 
 form:
   - modules
@@ -54,3 +35,6 @@ form:
   - rstudio_version
   - custom_vanillaconf
   - custom_num_gpus
+  - custom_email_address
+  - custom_reservation
+  - bc_account
