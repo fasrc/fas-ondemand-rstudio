@@ -24,12 +24,20 @@ mkdir -p $R_LIBS_USER
 # Need a unique /tmp for this job for /tmp/rstudio-rsession & /tmp/rstudio-server
 WORKDIR=/scratch/${USER}/${SLURM_JOB_ID}
 mkdir -m 700 -p ${WORKDIR}/tmp  
-mkdir -p ${WORKDIR}/var/run/{lock/rstudio-server,rstudio-server/rstudio-rsession,mount,systemd} ${WORKDIR}/logs
+mkdir -p ${WORKDIR}/var/run/{lock/rstudio-server,rstudio-server/rstudio-rsession,mount,systemd} ${WORKDIR}/var/lib/rstudio-server ${WORKDIR}/logs
 
 # https://github.com/rocker-org/rocker-versioned/issues/153
 # override R_LIBS_USER in /etc/R/Renviron.site
 cat >${WORKDIR}/Renviron.site <<END
 R_LIBS_USER=$R_LIBS_USER
+END
+
+
+cat >${WORKDIR}/rserver.conf <<END
+# Server Configuration File
+rsession-which-r=/usr/local/bin/R
+auth-timeout-minutes=0
+auth-stay-signed-in-days=10
 END
 
 # rsession needs to start with OMP_NUM_THREADS set to prevent OpenBLAS
@@ -45,11 +53,24 @@ END
 
 chmod +x ${WORKDIR}/rsession.sh
 
+# [Rstudio 1.4] database is required
+cat > ${WORKDIR}/database.conf <<END
+provider=sqlite
+directory=/var/lib/rstudio-server
+END
+
+# [Rstudio 1.4] configure logging
+cat > ${WORKDIR}/logging.conf <<END
+[@rserver]
+log-level=info
+max-size-mb=10
+END
+
 ## some binds that are necessary for running with singularity
-export SING_BINDS=" --bind ${WORKDIR}/logs:/var/log/rstudio-server --bind ${WORKDIR}/var/run:/var/run --bind ${WORKDIR}/tmp:/tmp"
+export SING_BINDS=" --bind ${WORKDIR}/logs:/var/log/rstudio-server --bind ${WORKDIR}/var/run:/var/run --bind ${WORKDIR}/var/lib/rstudio-server:/var/lib/rstudio-server  --bind ${WORKDIR}/tmp:/tmp"
 
 ## use our specific configs
-export SING_BINDS="$SING_BINDS --bind ${WORKDIR}/Renviron.site:${R_HOME}/etc/Renviron.site --bind ${WORKDIR}/rsession.sh:/etc/rstudio/rsession.sh"
+export SING_BINDS="$SING_BINDS --bind ${WORKDIR}/rserver.conf:/etc/rstudio/rserver.conf --bind ${WORKDIR}/database.conf:/etc/rstudio/database.conf --bind ${WORKDIR}/Renviron.site:${R_HOME}/etc/Renviron.site --bind ${WORKDIR}/rsession.sh:/etc/rstudio/rsession.sh --bind ${WORKDIR}/logging.conf:/etc/rstudio/logging.conf"
 
 ## users can chose if starting from a fresh config or keep the default in HOME/.rstudio
 <%- if !context.custom_vanillaconf.to_i.zero? -%>
