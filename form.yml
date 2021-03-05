@@ -22,7 +22,7 @@ attributes:
     widget: select
     label: "rstudio version"
     options:
-      - [ "R 4.0.3 - Scrb155", "harvardat_rstudio-master_5d64165f.sif"]
+      - [ "R 4.0.3 - Scrb155", "harvardat_rstudio-scrb155_8d2b08fe.sif"]
   custom_vanillaconf: 0
 
 form:
