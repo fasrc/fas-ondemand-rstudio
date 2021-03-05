@@ -131,7 +131,8 @@ RUN tlmgr update --self \
 #
 
 RUN install2.r -e fs curl corrplot Seurat ggplot2 pheatmap data.table MASS umap \
+	&& Rscript -e 'BiocManager::install(c("chromVAR", "motifmatchr", "SummarizedExperiment", "BSgenome.Hsapiens.UCSC.hg19", "BSgenome.Mmusculus.UCSC.mm10"), ask=FALSE)' \
 	&& Rscript -e 'remotes::install_github("caleblareau/BuenColors")' \
-	&& Rscript -e 'BiocManager::install(c("chromVAR", "chromVARmotifs", "motifmatchr", "SumarizedExperiment", "BSgenome.Hsapiens.UCSC.hg19", "BSgenome.Mmusculus.UCSC.mm10"), ask=FALSE)' \
-	&& Rscript -e 'devtools::install_github("GreenleafLab/ArchR", ref="master", repos = BiocManager::repositories())'
+	&& Rscript -e 'remotes::install_github("GreenleafLab/chromVARmotifs")' \
+	&& Rscript -e 'remotes::install_github("GreenleafLab/ArchR", ref="master", repos = BiocManager::repositories())' 
 
