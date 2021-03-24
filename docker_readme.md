@@ -1,6 +1,6 @@
 # Dockerfile for R 4.0.3 - SCRB 50
 
-This is for [SCRB 155: Epigenetics and Gene Regulation of Human Development and Disease](https://canvas.harvard.edu/courses/81128).
+This is for [SCRB 50: Building a Human Body: From Gene to Cell to Organism](https://canvas.harvard.edu/courses/84858).
 
 ## Build
 
