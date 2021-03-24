@@ -130,5 +130,7 @@ RUN tlmgr update --self \
 #        && Rscript -e 'devtools::install_github("davidkane9/PPBDS.data")'
 #
 
-RUN install2.r -e fs curl corrplot 
-
+RUN install2.r -e fs curl corrplot ggplot2 \
+	&& install2.r -e data.table dplyr ggnewscale msigdbr pheatmap Seurat tibble VennDiagram \
+	&& Rscript -e 'BiocManager::install(c("clusterProfiler", "DESeq2", "edgeR", "enrichplot"), ask=FALSE)' \
+	&& Rscript -e 'remotes::install_github("YuLab-SMU/clusterProfiler.dplyr")' 
