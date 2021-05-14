@@ -130,5 +130,4 @@ RUN tlmgr update --self \
 #        && Rscript -e 'devtools::install_github("davidkane9/PPBDS.data")'
 #
 
-RUN install2.r -e fs curl corrplot learnr raster tidyverse tidymodels 
-
+RUN install2.r -e fs curl corrplot learnr tidyverse tidymodels raster rgdal
