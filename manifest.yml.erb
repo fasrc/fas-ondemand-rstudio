@@ -1,5 +1,5 @@
 ---
-name: <%= defined?(title) ? title : "Rstudio Server" %>
+name: <%= defined?(@title) ? @title : "Rstudio Server" %>
 category: Interactive Apps
 subcategory: Servers
 role: batch_connect
