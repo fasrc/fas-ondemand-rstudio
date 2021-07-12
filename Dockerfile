@@ -1,4 +1,4 @@
-FROM rocker/verse:4.0.3
+FROM rocker/verse:4.1.0
 
 ## adding stuff from  https://github.com/Bioconductor/bioconductor_docker/blob/master/Dockerfile
 
@@ -39,6 +39,9 @@ RUN apt-get update \
 	libproj-dev \
 	libcairo2-dev \
 	libtiff5-dev \
+	libjpeg-dev \
+	libjpeg-turbo8-dev \
+	libjpeg8-dev \
 	libreadline-dev \
 	libgsl0-dev \
 	libgslcblas0 \
@@ -100,17 +103,6 @@ RUN apt-get update \
 
 ## Python installations
 RUN python3 -m pip install scikit-learn pandas pyyaml cwltool
-
-## FIXME
-## These two libraries don't install in the above section--WHY?
-RUN apt-get update \
-	&& apt-get -y --no-install-recommends install \
-	libmariadb-dev-compat \
-	libjpeg-dev \
-	libjpeg-turbo8-dev \
-	libjpeg8-dev \
-	&& apt-get clean \
-	&& rm -rf /var/lib/apt/lists/*
 
 ## add a couple of collections of latex style files
 RUN tlmgr update --self \
