@@ -1,0 +1,59 @@
+---
+title: <%= defined?(@title) ? @title : "Rstudio Server" %>
+cluster: "academic"
+attributes:
+  modules: null
+  extra_rstudio_args: ""
+  bc_queue: "academic"
+  custom_time:
+    label: "Allocated Time (expressed in MM , or HH:MM:SS , or DD-HH:MM)."
+    value: "<%= defined?(@custom_time) ? @custom_time : '04:00:00' %>"
+    widget: text_field
+  custom_email_address:
+    label: email address for status notification
+    widget: text_field
+  <% if defined?(@custom_memory_per_node_select) && @custom_memory_per_node_select %>
+  custom_memory_per_node:
+    label: Memory Allocation in GB
+    value: <%= defined?(@custom_memory_per_node) ? @custom_memory_per_node : 4 %>
+    min: <%= defined?(@custom_memory_per_node_min) ? @custom_memory_per_node_min : 1 %>
+    step: 1
+    max: <%= defined?(@custom_memory_per_node_max) ? @custom_memory_per_node_max : 32 %>
+    widget: number_field
+  <% else %>
+  custom_memory_per_node: <%= defined?(@custom_memory_per_node) ? @custom_memory_per_node : 8 %>
+  <% end %>
+  <% if defined?(@custom_num_cores_select) && @custom_num_cores_select %>
+  custom_num_cores:
+    label: Number of cores
+    value: <%= defined?(@custom_num_cores) ? @custom_num_cores : 1 %>
+    min: <%= defined?(@custom_num_cores_min) ? @custom_num_cores_min : 1 %>
+    step: 1
+    max: <%= defined?(@custom_num_cores_max) ? @custom_num_cores_max : 16 %>
+    widget: number_field
+    help: "Number of Cpus to allocate"
+  <% else %>
+  custom_num_cores: <%= defined?(@custom_num_cores) ? @custom_num_cores : 2 %>
+  <% end %>
+  custom_num_gpus: <%= defined?(@custom_num_gpus) ? @custom_num_gpus : 0 %> 
+  rstudio_version: <%= defined?(@rstudio_version) ? @rstudio_version : '' %>
+  custom_vanillaconf:
+    label: "Start rstudio with a new configuration"
+    widget: check_box
+    value: 1
+    help: |
+          **_Checking this box will start rstudio with a fresh configuration._** 
+          
+          This is useful if you need to run different instances at the same time with different configurations.<br> 
+          Leave the box unchecked if you want rstudio to start with the default configuration you have in your ~/.rstudio
+
+form:
+  - modules
+  - extra_rstudio_args
+  - bc_queue
+  - custom_memory_per_node
+  - custom_num_cores
+  - custom_time
+  - rstudio_version
+  - custom_vanillaconf
+  - custom_num_gpus
