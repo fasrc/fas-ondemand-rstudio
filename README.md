@@ -38,6 +38,49 @@ Once that's done, you can run your version of the app from the sandbox control p
 See also:
 - https://osc.github.io/ood-documentation/latest/app-development.html 
 
+## Updating the docker image
+
+Note that any updates pushed to the `Dockerfile` will trigger a Github Action that builds a new image and pushes it to the [harvardat](https://hub.docker.com/u/harvardat) organization based on the current branch name. In the case of the `master` branch, the new docker image will be pushed to [harvardat/rstudio-master](https://hub.docker.com/r/harvardat/rstudio-master).
+
+To build manually:
+
+```sh
+$ docker build -t harvardat/rstudio-master:latest .
+```
+
+To run the image:
+
+```
+$ docker run --rm -p 8787:8787 -e PASSWORD=yourpasswordhere harvardat/rstudio-master:latest
+```
+
+If you intend to push the image to docker hub, it must be tagged with the git commit:
+
+```sh
+$ export GIT_COMMIT_HASH=$(git log -1 --format=%h)
+$ docker tag harvardat/rstudio-master:latest harvardat/rstudio-master:$GIT_COMMIT_HASH
+$ docker push harvardat/rstudio-master:$GIT_COMMIT_HASH
+$ docker push harvardat/rstudio-master:latest
+```
+
+To obtain a list of installed packages, first create `list_installed.R`:
+
+```sh
+$ cat << '__EOF' >list_installed.R
+ip <- as.data.frame(installed.packages()[,c(1,3:4)])
+rownames(ip) <- NULL
+ip <- ip[is.na(ip$Priority),1:2,drop=FALSE]
+print(ip, row.names=FALSE)
+__EOF
+```
+
+And then run the image and execute the R script:
+
+```sh
+$ docker run --rm -i harvardat/rstudio-master:latest R <list_installed.R
+```
+
+
 ## Contributing
 
 If you intend deploy your modified version as system wide app, please commit your changes to a branch first, and open a PR.
