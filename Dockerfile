@@ -1,4 +1,4 @@
-FROM rocker/verse:4.0.3
+FROM rocker/verse:4.1.1
 
 ## adding stuff from  https://github.com/Bioconductor/bioconductor_docker/blob/master/Dockerfile
 
@@ -39,6 +39,9 @@ RUN apt-get update \
 	libproj-dev \
 	libcairo2-dev \
 	libtiff5-dev \
+	libjpeg-dev \
+	libjpeg-turbo8-dev \
+	libjpeg8-dev \
 	libreadline-dev \
 	libgsl0-dev \
 	libgslcblas0 \
@@ -101,17 +104,6 @@ RUN apt-get update \
 ## Python installations
 RUN python3 -m pip install scikit-learn pandas pyyaml cwltool
 
-## FIXME
-## These two libraries don't install in the above section--WHY?
-RUN apt-get update \
-	&& apt-get -y --no-install-recommends install \
-	libmariadb-dev-compat \
-	libjpeg-dev \
-	libjpeg-turbo8-dev \
-	libjpeg8-dev \
-	&& apt-get clean \
-	&& rm -rf /var/lib/apt/lists/*
-
 ## add a couple of collections of latex style files
 RUN tlmgr update --self \
 	&& tlmgr install collection-latex \
@@ -130,9 +122,8 @@ RUN tlmgr update --self \
 #        && Rscript -e 'devtools::install_github("davidkane9/PPBDS.data")'
 #
 
-RUN install2.r -e fs curl corrplot Seurat ggplot2 pheatmap data.table MASS umap \
+RUN install2.r -e BiocManager fs curl corrplot data.table pheatmap learnr tidyverse tidymodels raster remotes rgdal Hmisc matrixcalc R.matlab rstan mcmc pdxTrees infer moderndive Seurat ggplot2 MASS umap \
 	&& Rscript -e 'BiocManager::install(c("chromVAR", "motifmatchr", "SummarizedExperiment", "BSgenome.Hsapiens.UCSC.hg19", "BSgenome.Mmusculus.UCSC.mm10"), ask=FALSE)' \
 	&& Rscript -e 'remotes::install_github("caleblareau/BuenColors")' \
 	&& Rscript -e 'remotes::install_github("GreenleafLab/chromVARmotifs")' \
 	&& Rscript -e 'remotes::install_github("GreenleafLab/ArchR", ref="master", repos = BiocManager::repositories())' 
-

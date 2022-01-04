@@ -2,7 +2,7 @@
 # Start RStudio Server
 #
 
-export container_folder=${CONTAINER_REPO}/${COURSE}
+export container_folder=/n/singularity_images/Academic-cluster/<%= context.semester %>/<%= context.course %>
 ## when you test new installs you probaby want to drop the images locally in your home folder
 #export container_folder=$HOME/Programs/containers/fasrc_sandbox_rstudio/
 export container_image=$container_folder/<%= context.rstudio_version %>
@@ -24,7 +24,7 @@ mkdir -p $R_LIBS_USER
 # Need a unique /tmp for this job for /tmp/rstudio-rsession & /tmp/rstudio-server
 WORKDIR=/scratch/${USER}/${SLURM_JOB_ID}
 mkdir -m 700 -p ${WORKDIR}/tmp  
-mkdir -p ${WORKDIR}/var/run/{lock/rstudio-server,rstudio-server/rstudio-rsession,mount,systemd} ${WORKDIR}/var/lib/rstudio-server ${WORKDIR}/logs
+mkdir -p ${WORKDIR}/var/run/{lock/rstudio-server,rstudio-server/rstudio-rsession,mount,systemd} ${WORKDIR}/var/lib/rstudio-server ${WORKDIR}/logs/{rstudio,rstudio-server}
 
 # https://github.com/rocker-org/rocker-versioned/issues/153
 # override R_LIBS_USER in /etc/R/Renviron.site
@@ -67,7 +67,7 @@ max-size-mb=10
 END
 
 ## some binds that are necessary for running with singularity
-export SING_BINDS=" --bind ${WORKDIR}/logs:/var/log/rstudio-server --bind ${WORKDIR}/var/run:/var/run --bind ${WORKDIR}/var/lib/rstudio-server:/var/lib/rstudio-server  --bind ${WORKDIR}/tmp:/tmp"
+export SING_BINDS=" --bind ${WORKDIR}/logs/rstudio-server:/var/log/rstudio-server --bind ${WORKDIR}/logs/rstudio:/var/log/rstudio --bind ${WORKDIR}/var/run:/var/run --bind ${WORKDIR}/var/lib/rstudio-server:/var/lib/rstudio-server  --bind ${WORKDIR}/tmp:/tmp"
 
 ## use our specific configs
 export SING_BINDS="$SING_BINDS --bind ${WORKDIR}/rserver.conf:/etc/rstudio/rserver.conf --bind ${WORKDIR}/database.conf:/etc/rstudio/database.conf --bind ${WORKDIR}/Renviron.site:${R_HOME}/etc/Renviron.site --bind ${WORKDIR}/rsession.sh:/etc/rstudio/rsession.sh --bind ${WORKDIR}/logging.conf:/etc/rstudio/logging.conf"
@@ -89,6 +89,7 @@ singularity exec --cleanenv \
  "${container_image}" \
  sh -c "USER=${USER}
  rserver \
+ --server-user ${USER} \
  --www-port ${port} \
  --auth-none 0 \
  --auth-encrypt-password 0 \
