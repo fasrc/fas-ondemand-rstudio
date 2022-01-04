@@ -122,7 +122,7 @@ RUN tlmgr update --self \
 #        && Rscript -e 'devtools::install_github("davidkane9/PPBDS.data")'
 #
 
-RUN install2.r -e BiocManager fs curl corrplot data.table pheatmap learnr tidyverse tidymodels raster remotes rgdal Hmisc matrixcalc R.matlab rstan mcmc pdxTrees infer moderndive Seurat ggplot2 MASS umap \
+RUN install2.r -e BiocManager fs curl corrplot data.table pheatmap learnr tidyverse tidymodels raster remotes rgdal Hmisc matrixcalc R.matlab rstan mcmc pdxTrees infer moderndive Seurat ggplot2 MASS umap Signac swirl \
 	&& Rscript -e 'BiocManager::install(c("chromVAR", "motifmatchr", "SummarizedExperiment", "BSgenome.Hsapiens.UCSC.hg19", "BSgenome.Mmusculus.UCSC.mm10"), ask=FALSE)' \
 	&& Rscript -e 'remotes::install_github("caleblareau/BuenColors")' \
 	&& Rscript -e 'remotes::install_github("GreenleafLab/chromVARmotifs")' \
