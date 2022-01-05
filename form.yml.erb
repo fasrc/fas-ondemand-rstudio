@@ -4,7 +4,6 @@ cluster: "academic"
 attributes:
   modules: null
   extra_rstudio_args: ""
-  semester: <%= defined?(@semester) ? @semester : 'FALL2021' %>
   course: <%= defined?(@course) ? @course : 'atg_general_rstudio' %>
   bc_queue: "academic"
   custom_time:
@@ -52,7 +51,6 @@ attributes:
 form:
   - modules
   - extra_rstudio_args
-  - semester
   - course
   - bc_queue
   - custom_memory_per_node
