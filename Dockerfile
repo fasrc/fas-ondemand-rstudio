@@ -122,8 +122,14 @@ RUN tlmgr update --self \
 #        && Rscript -e 'devtools::install_github("davidkane9/PPBDS.data")'
 #
 
-RUN install2.r -e BiocManager fs curl corrplot data.table pheatmap learnr tidyverse tidymodels raster remotes rgdal Hmisc matrixcalc R.matlab rstan mcmc pdxTrees infer moderndive Seurat ggplot2 MASS umap Signac swirl \
+# SCRB 155 
+# 	Note that the *Signac* package requires Bioconductor packages.
+#   See the installation docs on how to install these automatically:
+#		https://satijalab.org/signac/articles/install.html
+
+RUN install2.r -e BiocManager fs curl corrplot data.table pheatmap learnr tidyverse tidymodels raster remotes rgdal Hmisc matrixcalc R.matlab rstan mcmc pdxTrees infer moderndive Seurat ggplot2 MASS umap swirl \
+	&& Rscript -e 'setRepositories(ind=1:2); install.packages("Signac")' \
 	&& Rscript -e 'BiocManager::install(c("chromVAR", "motifmatchr", "SummarizedExperiment", "BSgenome.Hsapiens.UCSC.hg19", "BSgenome.Mmusculus.UCSC.mm10"), ask=FALSE)' \
 	&& Rscript -e 'remotes::install_github("caleblareau/BuenColors")' \
 	&& Rscript -e 'remotes::install_github("GreenleafLab/chromVARmotifs")' \
-	&& Rscript -e 'remotes::install_github("GreenleafLab/ArchR", ref="master", repos = BiocManager::repositories())' 
+	&& Rscript -e 'remotes::install_github("GreenleafLab/ArchR", ref="master", repos = BiocManager::repositories())' \\
