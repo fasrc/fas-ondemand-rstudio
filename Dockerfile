@@ -108,12 +108,18 @@ RUN python3 -m pip install scikit-learn pandas pyyaml cwltool
 RUN tlmgr update --self \
 	&& tlmgr install collection-latex \
 	&& tlmgr install collection-latexrecommended \
-	&& tlmgr install collection-latexextra \
-	&& tlmgr install roboto \
-	&& tlmgr install lato \
-	&& tlmgr install fira \
-	&& tlmgr install helvet \
-	&& tlmgr install urw-arial
+	&& tlmgr install collection-latexextra
+
+## Explicitly requested fonts for TeX Live
+#
+# NOTE: the "arial-urw" font package cannot be installed with tlmgr
+# like other fonts. See also: https://tug.org/fonts/getnonfreefonts/
+#
+RUN tlmgr install fira lato roboto \
+	&& curl -OL http://www.tug.org/fonts/getnonfreefonts/install-getnonfreefonts \
+  	&& texlua ./install-getnonfreefonts \
+  	&& rm -f install-getnonfreefonts \
+	&& getnonfreefonts --sys arial-urw
 
 ## Explicitly requested packages 
 # 
