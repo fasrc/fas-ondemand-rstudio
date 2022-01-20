@@ -108,7 +108,12 @@ RUN python3 -m pip install scikit-learn pandas pyyaml cwltool
 RUN tlmgr update --self \
 	&& tlmgr install collection-latex \
 	&& tlmgr install collection-latexrecommended \
-	&& tlmgr install collection-latexextra
+	&& tlmgr install collection-latexextra \
+	&& tlmgr install roboto \
+	&& tlmgr install lato \
+	&& tlmgr install fira \
+	&& tlmgr install helvet \
+	&& tlmgr install urw-arial
 
 ## Explicitly requested packages 
 # 
