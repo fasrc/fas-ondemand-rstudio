@@ -133,4 +133,5 @@ RUN tlmgr install fira lato roboto \
 #        && Rscript -e 'devtools::install_github("davidkane9/PPBDS.data")'
 #
 
-RUN install2.r -e BiocManager fs curl corrplot data.table pheatmap learnr tidyverse tidymodels raster remotes rgdal Hmisc matrixcalc R.matlab rstan mcmc pdxTrees infer moderndive economiccomplexity sf igraph 
+RUN install2.r -e BiocManager fs curl corrplot data.table pheatmap learnr tidyverse tidymodels raster remotes rgdal Hmisc matrixcalc R.matlab rstan mcmc pdxTrees infer moderndive economiccomplexity sf igraph astrochron caTools caret fields multitaper neuralnet pracma reshape
+
