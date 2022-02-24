@@ -127,8 +127,8 @@ RUN tlmgr update --self \
 #   See the installation docs on how to install these automatically:
 #		https://satijalab.org/signac/articles/install.html
 
-RUN install2.r -e BiocManager fs curl corrplot data.table pheatmap learnr tidyverse tidymodels raster remotes rgdal Hmisc matrixcalc R.matlab rstan mcmc pdxTrees infer moderndive Seurat ggplot2 MASS umap swirl DESeq2 EnsDb.Hsapiens.v75 biovizBase hdf5r \
-	&& Rscript -e 'BiocManager::install(c("chromVAR", "motifmatchr", "SummarizedExperiment", "BSgenome.Hsapiens.UCSC.hg19", "BSgenome.Mmusculus.UCSC.mm10", "GenomeInfoDb", "GenomicRanges", "Rsamtools"), ask=FALSE)' \
+RUN install2.r -e BiocManager fs curl corrplot data.table pheatmap learnr tidyverse tidymodels raster remotes rgdal Hmisc matrixcalc R.matlab rstan mcmc pdxTrees infer moderndive Seurat ggplot2 MASS umap swirl hdf5r \
+	&& Rscript -e 'BiocManager::install(c("chromVAR", "motifmatchr", "SummarizedExperiment", "BSgenome.Hsapiens.UCSC.hg19", "BSgenome.Mmusculus.UCSC.mm10", "GenomeInfoDb", "GenomicRanges", "Rsamtools", "DESeq2", "EnsDb.Hsapiens.v75", "biovizBase"), ask=FALSE)' \
 	&& Rscript -e 'remotes::install_github("caleblareau/BuenColors")' \
 	&& Rscript -e 'remotes::install_github("GreenleafLab/chromVARmotifs")' \
 	&& Rscript -e 'remotes::install_github("GreenleafLab/ArchR", ref="master", repos = BiocManager::repositories())' \
